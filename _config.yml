@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Tony Zhang's Personal Website"
+title                    : "Tony Zhang"
 title_separator          : "-"
 name                     : "Tony Zhang"
 description              : "Personal website of Tony Zhang. Computer Science (CS) major at Cornell University"
@@ -84,9 +84,12 @@ analytics:
 author:
   name             : "Tony Zhang"
   avatar           : "/assets/images/bio_photo.jpg"
-  bio              : "I am an amazing person."
+  bio              : "CS Major. <br>
+                      Cornell University'19. <br> 
+                      CS 2110 TA. <br>
+                      Snowboarder, photographer."
   location         : "Ithaca, NY | Singapore"
-  email            : "nz97(at)cornell(dot)edu"
+  email            : "nz97@cornell.edu"
   uri              :
   bitbucket        :
   codepen          :
