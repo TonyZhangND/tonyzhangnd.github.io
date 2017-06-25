@@ -6,14 +6,14 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-locale                   : "en"
-title                    : "Site Title"
+locale                   : "en-US"
+title                    : "Tony Zhang's Personal Website"
 title_separator          : "-"
-name                     : "Your Name"
-description              : "An amazing website."
-url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+name                     : "Tony Zhang"
+description              : "Personal website of Tony Zhang. Computer Science (CS) major at Cornell University"
+url                      : https://tonyz97.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository               : "TonyZ97/tonyz97.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -55,18 +55,23 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               :
+  username               : "WhiterMeerkat"
 facebook:
-  username               :
+  username               : "TonyZhang97"
   app_id                 :
   publisher              :
-og_image                 : # Open Graph/Twitter default site image
+og_image                 : "/assets/images/cs_is_life.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
+  type                   : "Person"
   name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  links:
+    - "https://twitter.com/yourTwitter"
+    - "https://www.facebook.com/TonyZhang97"
+    - "https://twitter.com/WhiterMeerkat"
+    - "https://www.linkedin.com/in/tonyzhangnd/"
+    - "https://github.com/tonyz97"
 
 # Analytics
 analytics:
@@ -77,30 +82,30 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  name             : "Tony Zhang"
+  avatar           : "/assets/images/bio_photo.jpg"
   bio              : "I am an amazing person."
-  location         : "Somewhere"
-  email            :
+  location         : "Ithaca, NY | Singapore"
+  email            : "nz97(at)cornell(dot)edu"
   uri              :
   bitbucket        :
   codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
+  dribbble         : 
+  flickr           : 
+  facebook         : "TonyZhang97"
   foursquare       :
-  github           :
+  github           : "TonyZ97"
   google_plus      :
   keybase          :
   instagram        :
   lastfm           :
-  linkedin         :
-  pinterest        :
-  soundcloud       :
+  linkedin         : "tonyzhangnd"
+  pinterest        : 
+  soundcloud       : 
   stackoverflow    : # "123456/username" (the last part of your profile url, e.g. http://stackoverflow.com/users/123456/username)
   steam            :
   tumblr           :
-  twitter          :
+  twitter          : "WhiterMeerkat"
   vine             :
   weibo            :
   xing             :
@@ -174,7 +179,7 @@ sass:
 permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
-timezone: # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: America/New_York
 
 
 # Plugins
@@ -241,6 +246,6 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: # true
+      comments: false
       share: true
       related: true
