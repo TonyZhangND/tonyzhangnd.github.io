@@ -4,4 +4,5 @@ author_profile: true
 title: Welcome to Tony's personal website
 ---
 
-<h2>Hello World!</h2>
+{% capture my_include %}{% include hello-world.md %}{% endcapture %}
+{{ my_include | markdownify }}
