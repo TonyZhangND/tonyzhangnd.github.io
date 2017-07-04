@@ -385,11 +385,23 @@
     <h4 class="page__share-title">Share on</h4>
   
 
+  <!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=259476601083519";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
   <!--<a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=My Summer Internship & Writing My First Django App https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>-->
 
   <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-via="WhiterMeerkat" data-lang="en" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <!--<a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a> -->
+
+<div class="fb-share-button" data-href="https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" data-layout="button" data-size="large" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>
 
   <a href="https://plus.google.com/share?url=https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
