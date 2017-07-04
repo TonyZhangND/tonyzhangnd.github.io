@@ -1,4 +1,4 @@
-et -e
+set -e
 
 DEPLOY_REPO="https://${DEPLOY_BLOG_TOKEN}@github.com/TonyZ97/tonyz97.github.io.git"
 
@@ -32,8 +32,8 @@ function deploy {
 	    exit 0
 	fi  
 
-	if [ "$TRAVIS_BRANCH" != "master" ]; then
-	    echo "except we should only publish the master branch. stopping here"
+	if [ "$TRAVIS_BRANCH" != "build" ]; then
+	    echo "except we should only publish the build branch. stopping here"
 	    exit 0
 	fi
 
