@@ -1,9 +1,20 @@
 # High Priority
+- Integrate Latex rendering
 - Automated test for broken links https://www.digitalocean.com/community/tutorials/controlling-urls-and-links-in-jekyll 
 - Find a better default banner for sharing!
+- categories, e.g. Web Development, Computer Vision
+- tags: Python, Django, learning.
 
 
 # Low Priority
+- Blog shall be called Computer Science ^ Physics. First post about scientific bloopers of interstellar. Second post about the mind-blowingness of the most awesome thing I learned in E&M class. Electricity and magnetism is the same thing, it just perspective.
+“I love movies about the scientific endeavor. Historical fiction like Hidden Figures, Particle Fever, Apollo 11, and even science fiction such as The Martian. But not those that goes too far into science fiction and lose their footing on realism. Like Interstellar.
+
+As an aside, those helmets in the Martian, can’t see anything. 
+
+Talk about the impossibity if Gargantua.
+
+
 - Have different blogs sorted by data, categories, etc. So have urls like blog/recent, blog/categories… Have blog/ redirect to blog/recent
 
 #Completed
