@@ -1,5 +1,6 @@
 # High Priority
 - Integrate Latex rendering
+- Get rid of the awful auto-scaling of font size
 - Automated test for broken links https://www.digitalocean.com/community/tutorials/controlling-urls-and-links-in-jekyll 
 - Find a better default banner for sharing!
 - categories, e.g. Web Development, Computer Vision
