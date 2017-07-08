@@ -1,6 +1,6 @@
 set -e
 
-DEPLOY_REPO="https://${DEPLOY_BLOG_TOKEN}@github.com/TonyZ97/tonyz97.github.io.git"
+DEPLOY_REPO="https://${DEPLOY_BLOG_TOKEN}@github.com/TonyZhangND/tonyzhangnd.github.io.git"
 
 function main {
 	clean

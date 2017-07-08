@@ -36,8 +36,8 @@
 <meta property="og:title" content="Mitosis Data Processing Part 1 - Template Matching Using OpenCV">
 
 
-  <link rel="canonical" href="https://tonyz97.github.io/2017/07/Template-Matching.html">
-  <meta property="og:url" content="https://tonyz97.github.io/2017/07/Template-Matching.html">
+  <link rel="canonical" href="https://tonyzhangnd.github.io/2017/07/Template-Matching.html">
+  <meta property="og:url" content="https://tonyzhangnd.github.io/2017/07/Template-Matching.html">
 
 
 
@@ -48,12 +48,12 @@
   <meta name="twitter:site" content="@WhiterMeerkat">
   <meta name="twitter:title" content="Mitosis Data Processing Part 1 - Template Matching Using OpenCV">
   <meta name="twitter:description" content="After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.">
-  <meta name="twitter:url" content="https://tonyz97.github.io/2017/07/Template-Matching.html">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2017/07/Template-Matching.html">
 
   
     <meta name="twitter:card" content="summary">
     
-      <meta name="twitter:image" content="https://tonyz97.github.io/assets/images/cs_is_life.jpg">
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/cs_is_life.jpg">
     
   
 
@@ -69,7 +69,7 @@
 
 
 
-  <meta property="og:image" content="https://tonyz97.github.io/assets/images/cs_is_life.jpg">
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/cs_is_life.jpg">
 
 
 
@@ -85,8 +85,8 @@
     {
       "@context": "http://schema.org",
       "@type": "Organization",
-      "url": "https://tonyz97.github.io",
-      "logo": "https://tonyz97.github.io/assets/images/cs_is_life.jpg"
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/cs_is_life.jpg"
     }
   </script>
 
@@ -97,8 +97,8 @@
       "@context" : "http://schema.org",
       "@type" : "Person",
       "name" : "Tony Zhang",
-      "url" : "https://tonyz97.github.io",
-      "sameAs" : ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/tonyz97"]
+      "url" : "https://tonyzhangnd.github.io",
+      "sameAs" : ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
     }
   </script>
 
@@ -110,7 +110,7 @@
 <!-- end SEO -->
 
 
-<link href="https://tonyz97.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+<link href="https://tonyzhangnd.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -122,7 +122,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="https://tonyz97.github.io/assets/css/main.css">
+<link rel="stylesheet" href="https://tonyzhangnd.github.io/assets/css/main.css">
 
 <!--[if lte IE 9]>
   <style>
@@ -158,14 +158,14 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
-        <a class="site-title" href="https://tonyz97.github.io/">Tony Zhang</a>
+        <a class="site-title" href="https://tonyzhangnd.github.io/">Tony Zhang</a>
         <ul class="visible-links">
           
             
-            <li class="masthead__menu-item"><a href="https://tonyz97.github.io/about/">About</a></li>
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/about/">About</a></li>
           
             
-            <li class="masthead__menu-item"><a href="https://tonyz97.github.io/blog/">Blog</a></li>
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/blog/">Blog</a></li>
           
         </ul>
         <button><div class="navicon"></div></button>
@@ -189,7 +189,7 @@
   
     <div class="author__avatar">
       
-        <img src="https://tonyz97.github.io/assets/images/bio_photo.jpg" class="author__avatar" alt="Tony Zhang" itemprop="image">
+        <img src="https://tonyzhangnd.github.io/assets/images/bio_photo.jpg" class="author__avatar" alt="Tony Zhang" itemprop="image">
       
     </div>
   
@@ -261,7 +261,7 @@
 
       
         <li>
-          <a href="https://github.com/TonyZ97" itemprop="sameAs">
+          <a href="https://github.com/TonyZhangND" itemprop="sameAs">
             <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
           </a>
         </li>
@@ -323,7 +323,7 @@
 
 
 
-  10 minute read
+  11 minute read
 </p>
           
         </header>
@@ -356,6 +356,8 @@
 <p>My first thought was to use a neural net, which I will train to give me the locations of arrow tips. But this felt like a bad solution because it requires a lot of knob-tuning, and it’s a black box.</p>
 
 <p>Computer Vision whizzes on Quora pointed me in the right direction: Template Matching! Initially, I was thrown off by the fact that my arrows had different orientations. Did I have to implement a method that was rotationally-invariant? (<a href="https://link.springer.com/chapter/10.1007/978-3-540-77129-6_13">Kim &amp; Araujo, 2007</a>) In the end, I went with a simple solution that avoided such overkill. I had 360 templates, one for each degree of rotation, and use the template matching methods in openCV.</p>
+
+<p>This would help me place bounding boxes on arrows, as well as the rotation information of the arrows. With a bit of trigonometry, I can then extract information about the actual location the arrows are pointing.</p>
 
 <h2 id="writing-the-algorithm">Writing the Algorithm:</h2>
 <p>My template matching algorithm is summarized as so:</p>
@@ -495,7 +497,7 @@
 <p>Again, a method for bulk processing of images is in the complete code at the bottom of this page.</p>
 
 <h2 id="conclusions">Conclusions</h2>
-<p>Now, I have completed my first goal of locating all the arrows. Of course, the current code only draws red boxes on the images, which is useful for debugging purposes. It is easy to modify my code to extract the coordinates of the boxes, which tells me roughly where my arrows are (the top left corner of the boxes are given by the <code class="highlighter-rouge">pt</code> variable in the code block above).</p>
+<p>Now, I have completed my first goal of locating all the arrows. Of course, the current code only finds and draws bounding boxes on images, which is useful for debugging purposes. It is easy to modify my code to extract the coordinates of the boxes, which tells me roughly where my arrows are (the top left corner of the boxes are given by the <code class="highlighter-rouge">pt</code> variable in the code block above).</p>
 
 <p>My next step is to transform these points, using the orientation information of the matching templates, into pixels that the arrows point to, which will be our ground truth. This doesn’t have to be exact of course, since we only need to tell our neural net roughly where to look, and if the ground-truth pixel is within the patch returned by the neural net.</p>
 
@@ -657,15 +659,15 @@
   <!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595baf6db42fb7c8"></script>
 
-  <!-- <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=https://tonyz97.github.io/2017/07/Template-Matching.html" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <!-- <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=https://tonyzhangnd.github.io/2017/07/Template-Matching.html" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyz97.github.io/2017/07/Template-Matching.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyzhangnd.github.io/2017/07/Template-Matching.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
 
-  <a href="https://plus.google.com/share?url=https://tonyz97.github.io/2017/07/Template-Matching.html" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=https://tonyzhangnd.github.io/2017/07/Template-Matching.html" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://tonyz97.github.io/2017/07/Template-Matching.html" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a> -->
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://tonyzhangnd.github.io/2017/07/Template-Matching.html" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a> -->
 
   
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -679,7 +681,7 @@
       
   <nav class="pagination">
     
-      <a href="https://tonyz97.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="pagination--pager" title="My Summer Internship &amp; Writing My First Django App
+      <a href="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="pagination--pager" title="My Summer Internship &amp; Writing My First Django App
 ">Previous</a>
     
     
@@ -711,13 +713,13 @@
       <li><a href="https://twitter.com/WhiterMeerkat"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
     
     
-      <li><a href="https://facebook.com/TonyZhang97"><i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+      <li><a href="https://facebook.com/TonyZhangND"><i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
     
     
-      <li><a href="http://github.com/TonyZ97"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+      <li><a href="http://github.com/TonyZhangND"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
     
     
-    <li><a href="https://tonyz97.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="https://tonyzhangnd.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
   </ul>
 </div>
 
@@ -725,7 +727,7 @@
       </footer>
     </div>
 
-    <script src="https://tonyz97.github.io/assets/js/main.min.js"></script>
+    <script src="https://tonyzhangnd.github.io/assets/js/main.min.js"></script>
 
 
 
