@@ -24,7 +24,7 @@
 
 
 
-<meta name="description" content="A detailed two-part series about processing raw images into machine-usable data. Part 1 focuses on placing bounding boxes on target features.">
+<meta name="description" content="A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.">
 
 
 
@@ -41,13 +41,13 @@
 
 
 
-  <meta property="og:description" content="A detailed two-part series about processing raw images into machine-usable data. Part 1 focuses on placing bounding boxes on target features.">
+  <meta property="og:description" content="A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.">
 
 
 
   <meta name="twitter:site" content="@WhiterMeerkat">
   <meta name="twitter:title" content="Mitosis Image Processing Part 1 - Template Matching Using OpenCV">
-  <meta name="twitter:description" content="A detailed two-part series about processing raw images into machine-usable data. Part 1 focuses on placing bounding boxes on target features.">
+  <meta name="twitter:description" content="A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.">
   <meta name="twitter:url" content="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html">
 
   
@@ -308,7 +308,7 @@
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
     <meta itemprop="headline" content="Mitosis Image Processing Part 1 - Template Matching Using OpenCV">
-    <meta itemprop="description" content="A detailed two-part series about processing raw images into machine-usable data. Part 1 focuses on placing bounding boxes on target features.">
+    <meta itemprop="description" content="A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.">
     <meta itemprop="datePublished" content="July 05, 2017">
     
 
@@ -591,7 +591,7 @@ After my first task of developing the Django web application at my summer intern
     <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">match_and_draw</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
-    <span class="s">""" Apply template matching to img_name in IMG_DIR, using
+    <span class="s">""" Applies template matching to img_name in IMG_DIR, using
     tmpl{0...359}.png and mask{0...359}.png.
     Saves result with boxes drawn around matches as as img_name'r'.jpg in RES_DIR
     """</span>
