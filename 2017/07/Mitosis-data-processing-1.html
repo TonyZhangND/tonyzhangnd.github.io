@@ -1,0 +1,827 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.4.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>Mitosis Data Processing Part 1 - Template Matching Using OpenCV - Tony Zhang</title>
+
+
+
+
+<meta name="description" content="A detailed two-part series about processing raw image data into machine-usable format. Part 1 focuses on placing bounding boxes on target features.">
+
+
+
+
+<meta name="author" content="Tony Zhang">
+
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="Mitosis Data Processing Part 1 - Template Matching Using OpenCV">
+
+
+  <link rel="canonical" href="https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html">
+  <meta property="og:url" content="https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html">
+
+
+
+  <meta property="og:description" content="A detailed two-part series about processing raw image data into machine-usable format. Part 1 focuses on placing bounding boxes on target features.">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="Mitosis Data Processing Part 1 - Template Matching Using OpenCV">
+  <meta name="twitter:description" content="A detailed two-part series about processing raw image data into machine-usable format. Part 1 focuses on placing bounding boxes on target features.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/template-matching/header-tall2.png">
+    
+  
+
+  
+    <meta name="twitter:creator" content="@Tony Zhang">
+  
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/template-matching/header-tall2.png">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-07-05T00:00:00-04:00">
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Tony Zhang",
+      "url" : "https://tonyzhangnd.github.io",
+      "sameAs" : ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://tonyzhangnd.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://tonyzhangnd.github.io/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+    <!-- MathJax for Latex rendering -->
+    <script type="text/javascript" async src="/MathJax/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="https://tonyzhangnd.github.io/">Tony Zhang</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/blog/">Blog</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="https://tonyzhangnd.github.io/assets/images/bio_photo.jpg" class="author__avatar" alt="Tony Zhang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        CS Major. <br> Cornell University'19. <br> CS 2110 TA. <br> Snowboarder. Photographer.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Ithaca, NY | Singapore</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:nz97@cornell.edu">
+            <meta itemprop="email" content="nz97@cornell.edu" />
+            <i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/WhiterMeerkat" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="https://www.facebook.com/TonyZhangND" itemprop="sameAs">
+            <i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/tonyzhangnd" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/TonyZhangND" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Mitosis Data Processing Part 1 - Template Matching Using OpenCV">
+    <meta itemprop="description" content="A detailed two-part series about processing raw image data into machine-usable format. Part 1 focuses on placing bounding boxes on target features.">
+    <meta itemprop="datePublished" content="July 05, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Mitosis Data Processing Part 1 - Template Matching Using OpenCV
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p><img src="/assets/images/template-matching/header-short.png" alt="Before-after image" />
+After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.</p>
+
+<p>Here’s the preamble. My research group is working on training a neural network to detect mitosis (cell division) in breast cancer histological images (See <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/">ICPR 2012 Mitosis Detection Contest</a>). Apparently, mitosis count is a good measurement of the aggressiveness of cancer tumors. But mitosis detection is a very challenging task for a computer, because of its indistinctness and its variability. To the untrained eye, such as mine, a cell undergoing mitosis also looks pretty much the same as a regular cell. There are also four stages of mitosis, each with a different shape configuration. Our current model is an ensemble of the <a href="https://arxiv.org/abs/1512.03385">ResNet</a> and <a href="http://www.robots.ox.ac.uk/~vgg/research/very_deep/">VGG</a> architectures. My future work involves improving this model. Exciting, but that is a job for another day.</p>
+
+<h2 id="todays-awesome-problem">Today’s Awesome Problem:</h2>
+<p>Equally awesome is my current undertaking. Since this is another collaboration between IHPC and one of Singapore’s hospitals, we are training our neural net using data provided by our partner. However, the data was annotated in a very raw format, in the form of these:</p>
+
+<p><img src="/assets/images/template-matching/M21.jpg" alt="Original training image" />
+<em>Training data in its original form</em></p>
+
+<p>The pain was two-fold. One, individual cells used for training must be cropped by hand. Two, the neural net would output of a set of pixel coordinates, and having no coordinate information, it was again up to the human eye to compare it to the images with green arrows.</p>
+
+<p>I’m thus armed with the following goal:</p>
+
+<ul>
+  <li>Write a program that, given an image with green arrows, outputs the pixel coordinates of where the arrows are pointing.</li>
+</ul>
+
+<h2 id="i-have-no-clue-but-thats-awesome">I Have No Clue, But That’s Awesome</h2>
+<p>I absolutely love this problem for two reasons: One, it’s meaningful as it drastically reduces human workload. Two, it’s a problem where I have no frickin’ clue how to solve, which in other words, mean it’s the best chance to learn something new!</p>
+
+<p>It is indeed trivial to find the color green in the images. But I need to know where the arrows are pointing, which requires knowing their orientation. I soon realized this is a lot more involved than finding green. Also, I happen to have zero computer vision experience. However, having no clue is what inspires me to tackle a problem, and I quickly set to work figuring out a line of attack.</p>
+
+<p>My first thought was to use a neural net, which I will train to give me the locations of arrow tips. But this felt like a bad solution because it requires a lot of knob-tuning, and it’s a black box.</p>
+
+<p>Computer Vision whizzes on Quora pointed me in the right direction: Template Matching! Initially, I was thrown off by the fact that my arrows had different orientations. Did I have to implement a method that was rotationally-invariant? (<a href="https://link.springer.com/chapter/10.1007/978-3-540-77129-6_13">Kim &amp; Araujo, 2007</a>) In the end, I went with a simple solution that avoided such overkill. I had 360 templates, one for each degree of rotation, and use the template matching methods in openCV.</p>
+
+<p>This would help me place bounding boxes on arrows, as well as the rotation information of the arrows. With a bit of trigonometry, I can then extract information about the actual location the arrows are pointing.</p>
+
+<h2 id="writing-the-algorithm">Writing the Algorithm:</h2>
+<p>My template matching algorithm is summarized as so:</p>
+
+<ol>
+  <li>Strip the background from the images. This improves matching by removing distracting elements.</li>
+  <li>Make 360 templates, one for each degree of rotation.</li>
+  <li>Match each image with 360 templates. (Fortunately, this is fairly fast for my small templates. Also probably faster rotational-invariant feature matching techniques, which I saw people complain on StackOverflow to be painfully slow)</li>
+  <li>Knowing the match locations and orientations, I can transform the points to recover the final location of arrow tips (I will talk about this in Part 2)</li>
+</ol>
+
+<p>Step 1 is trivial, as all the images had the same shade of green arrows. All I had to do was zero the non-green vectors in the RGBA matrix. I also did some parallel processing to speed this up for bulk processing of images (see complete code at bottom of page). Step 2 was likewise easy using SciPy, with this as my base template:<br />
+<img src="/assets/images/template-matching/base.png" alt="Base template" /></p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">misc</span><span class="p">,</span> <span class="n">ndimage</span>
+
+<span class="n">IMG_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">original</span> <span class="n">images</span><span class="p">}</span>
+<span class="n">STRIPPED_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">stripped</span> <span class="n">images</span><span class="p">}</span>
+<span class="n">TMPL_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">templates</span><span class="p">}</span>
+
+<span class="n">GREEN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">89</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span>  <span class="mi">89</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">strip</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
+    <span class="s">""" Removes background from img_name in IMG_DIR, leaving only green arrows.
+    Saves stripped image in STRIPPED_DIR, as img_name's'.jpg 
+    """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Stripping img </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">IMG_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
+    <span class="p">(</span><span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">)</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_size</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">GREEN</span><span class="p">):</span>
+                <span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c">#eg M21_s.jpg</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">make_templates</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s">'base.png'</span><span class="p">):</span>
+    <span class="s">""" Makes templates for rotational-deg=0...359 from base in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    """</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="n">base</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">deg</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> <span class="n">tmpl</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre>
+</div>
+
+<p>Next, following this <a href="http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html">wonderful tutorial</a>, I had step 3 functioning in no time. The algorithm uses the <code class="highlighter-rouge">cv2.TM_CCORR_NORMED</code> method on greyscaled images, with a match-acceptance threshold of <code class="highlighter-rouge">&gt;0.9</code>. It worked 99% of the time. But, in accordance with the power law of programming, that remaining 1% gave the biggest headache. Some edge cases gave me unacceptable false negatives:</p>
+
+<p><img src="/assets/images/template-matching/falseneg.png" alt="False Negatives" /><br />
+<em>False negatives (cv2.TM_CCORR_NORMED, acceptance threshold &gt;0.9)</em></p>
+
+<p>I could simply lower the threshold, but that gave me a ton of false positives before all the ground truths (ML lingo for the “real, actual positives”) were accepted. Due to the nature of the problem, it had to work 100%, and I needed a perfect solution.</p>
+
+<p>I realized the problem was due to the proximity of the arrows, such that they would overlap with the back region of the templates during matching. The black background in the templates must be somehow excluded from the correlation.</p>
+
+<p>To my dismay, openCV does not support alpha-dependent matching. As reluctant as I was to reinvent the wheel, I mentally prepared myself to write my own matching algorithm.</p>
+
+<p>But then I stumbled upon an article about a new masking feature for openCV 3.2 in C. Aha! I couldn’t find useful information because there simply wasn’t documentation for openCV 3.2 for Python! Masks were my solution.</p>
+
+<p>To create masks for each template, I used openCV’s <a href="http://docs.opencv.org/trunk/d7/d4d/tutorial_py_thresholding.html">thresholding feature</a>, which converted my templates from grayscale to black and white. The black regions acted as the “opaque” mask, allowing the white “transparent” regions to be factored into the correlation calculations.</p>
+
+<p><img src="/assets/images/template-matching/mask.png" alt="Mask" /><br />
+<em>Example of a template after thresholding</em></p>
+
+<p>Tuning the masks to work with openCV’s <code class="highlighter-rouge">matchTemplate()</code> method was another issue for me. Although <code class="highlighter-rouge">TM_CCORR_NORMED</code> now correctly identified my true positives, it gave me false positives that are even stronger than the true ones.</p>
+
+<p><img src="/assets/images/template-matching/falsepos.png" alt="False positives" /><br />
+<em>False positives (cv2.TM_CCORR_NORMED, acceptance threshold &gt;0.9)</em></p>
+
+<p>To this end, the wonderful folks on <a href="https://stackoverflow.com/questions/44690002/python-opencv-matchtemplate-on-grayscale-image-with-masking/44693722?noredirect=1#comment76390884_44693722]">StackOverflow helped me tremendously</a>. Using, the matching method <code class="highlighter-rouge">TM_SQDIFF</code> and a new threshold of <code class="highlighter-rouge">&lt;11</code> (empirically tuned), and using png templates and masks instead of jpeg did the trick. Note that non-matches have correlation of <code class="highlighter-rouge">&gt;200</code>, so a acceptance threshold of 11 is really good.</p>
+
+<p><img src="/assets/images/template-matching/M21_r.jpg" alt="Success" /><br />
+<em>Success! (cv2.TM_SQDIFF, acceptance threshold &lt;11)</em></p>
+
+<p>Cool was learning why <code class="highlighter-rouge">TM_CCORR_NORMED</code> did not work with jpeg.</p>
+
+<script type="math/tex; mode=display">R_{\textrm{ccorr normed}}(x, y) = \frac{\sum_{x',y'}(T(x', y') \cdotp I(x+x', y+y'))}{\sqrt{\sum_{x',y'}T(x', y')^2 \cdotp I(x+x', y+y')^2}}</script>
+
+<script type="math/tex; mode=display">R_{\textrm{sqdiff}}(x, y) = \sum_{x', y'}(T'(x', y') \cdotp I(x+x', y+y'))</script>
+
+<p>Because <code class="highlighter-rouge">TM_CCORR_NORMED</code> is a normalized function with the denominator that it has, the black backgrounds meant I was dividing by 0 in many cases. This is not cool, but having a matrix entry of <code class="highlighter-rouge">numpy.nan</code> wasn’t the issue because the comparison <code class="highlighter-rouge">nan&gt;threshold</code> yields false. The key was with the jpeg format. Because of lossy jpeg compression, entries that should have been 0 (black), were not. This gave me very small denominators, causing the correlation to blow up and give me false positives. This is why png masks, or using <code class="highlighter-rouge">TM_SQDIFF</code> which does not have the denominator, fixes the problem.</p>
+
+<p>Here is the end result and code, using <code class="highlighter-rouge">TM_SQDIFF</code> and png masks:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+
+<span class="n">MASK_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">masks</span><span class="p">}</span>
+<span class="n">RES_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">match</span> <span class="n">results</span><span class="p">}</span>
+
+<span class="n">MATCH_THRESH</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c">#specifies degree-interval at which to match</span>
+<span class="c">#Match thresholds and resolution were empirically tuned</span>
+
+<span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
+    <span class="s">""" Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    """</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="n">ret2</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="o">+</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MASK_DIR</span><span class="p">,</span> <span class="s">'mask</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">match_and_draw</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
+    <span class="s">""" Apply template matching to img_name in IMG_DIR, using
+    tmpl{0...359}.png and mask{0...359}.png.
+    Saves result with boxes drawn around matches as as img_name'r'.jpg in RES_DIR
+    """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Matching img </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+    <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>	<span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">MATCH_RES</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MASK_DIR</span><span class="p">,</span> <span class="s">'mask</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">tmpl</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">tmpl</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TM_SQDIFF</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">&lt;</span> <span class="n">MATCH_THRESH</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'Match for deg{}, pt({}, {}), sqdiff {}'</span><span class="o">.</span>
+                <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+    <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c">#eg M21_r.jpg</span>
+    <span class="k">return</span>
+</code></pre>
+</div>
+
+<p>Again, a method for bulk processing of images is in the complete code at the bottom of this page.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Now, I have completed my first goal of locating all the arrows. Of course, the current code only finds and draws bounding boxes on images, which is useful for debugging purposes. It is easy to modify my code to extract the coordinates of the boxes, which tells me roughly where my arrows are (the top left corner of the boxes are given by the <code class="highlighter-rouge">pt</code> variable in the code block above).</p>
+
+<p>My next step is to transform these points, using the orientation information of the matching templates, into pixels that the arrows point to, which will be our ground truth. This doesn’t have to be exact of course, since we only need to tell our neural net roughly where to look, and if the ground-truth pixel is within the patch returned by the neural net.</p>
+
+<p>Also, notice that the current program may output a couple of matching points for each arrow. I would need to coalesce these points into a single point for an accurate mitosis count. I will talk about my point transformation and coalescing algorithm in <strong>Part 2</strong>!</p>
+
+<h3 id="complete-code">Complete Code</h3>
+
+<p>Below is the complete code for Part 1, with added error handling and print statements.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">misc</span><span class="p">,</span> <span class="n">ndimage</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="n">IMG_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">original</span> <span class="n">images</span><span class="p">}</span>
+<span class="n">STRIPPED_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">stripped</span> <span class="n">images</span><span class="p">}</span>
+<span class="n">TMPL_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">templates</span><span class="p">}</span>
+<span class="n">MASK_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">masks</span><span class="p">}</span>
+<span class="n">RES_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">match</span> <span class="n">results</span><span class="p">}</span>
+
+<span class="n">GREEN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">89</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span>  <span class="mi">89</span><span class="p">])</span>
+<span class="n">MATCH_THRESH</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c">#specifies degree-interval at which to match</span>
+<span class="c">#Match thresholds and resolution were empirically tuned</span>
+
+<span class="k">def</span> <span class="nf">strip</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
+    <span class="s">""" Removes background from img_name in IMG_DIR, leaving only green arrows.
+    Saves stripped image in STRIPPED_DIR, as img_name's'.jpg """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Stripping img </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">IMG_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
+    <span class="k">except</span> <span class="nb">IOError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Failed to strip img </span><span class="si">%</span><span class="s">s. Image not found.'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">(</span><span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">)</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_size</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">GREEN</span><span class="p">):</span>
+                <span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">])</span>
+    <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c">#eg M21_s.jpg</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">strip_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="s">""" Applies strip() to all images in IMG_DIR.
+
+    This method uses multiprocessing:
+    num_processes -- the number of parallel processes to spawn for this task.
+    (default 2)
+    """</span>
+    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">IMG_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'M[0-9]*.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Stripping background from </span><span class="si">%</span><span class="s">d images'</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">num_processes</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">imgs</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">make_templates</span><span class="p">():</span>
+    <span class="s">""" Makes templates for rotational-deg=0...359 from base.jpg in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span><span class="s">'base_short.png'</span><span class="p">))</span>
+    <span class="k">except</span> <span class="nb">IOError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Failed to make templates. Base template is not found'</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">deg</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> <span class="n">tmpl</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
+    <span class="s">""" Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    """</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tmpl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'Failed to make mask {0}. tmpl{0}.png is not found.'</span><span class="o">.</span>
+                <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret2</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> 
+                <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="o">+</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MASK_DIR</span><span class="p">,</span> <span class="s">'mask</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">match_and_draw</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
+    <span class="s">""" Apply template matching to img_name in IMG_DIR, using
+    tmpl{0...359}.png and mask{0...359}.png.
+    Saves result with boxes drawn around matches as as img_name'r'.jpg in RES_DIR
+    """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Matching img </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+    <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">img_rgb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Failed to match img </span><span class="si">%</span><span class="s">s. Image not found.'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">MATCH_RES</span><span class="p">):</span>
+        <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MASK_DIR</span><span class="p">,</span> <span class="s">'mask</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
+            <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tmpl</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'Failed to match for tmpl </span><span class="si">%</span><span class="s">d.'</span> <span class="o">%</span><span class="n">deg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">tmpl</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="n">tmpl</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TM_SQDIFF</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">res</span> <span class="o">&lt;</span> <span class="n">MATCH_THRESH</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'Match for deg{}, pt({}, {}), sqdiff {}'</span><span class="o">.</span>
+                    <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+    <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c">#eg M21_r.jpg</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">num_imgs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="s">""" Applies match() to all images in STRIPPED_DIR.
+
+    This method uses multiprocessing:
+    num_processes -- the number of parallel processes to spawn for this task.
+    (default 2)
+    """</span>
+    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'M[0-9]*_s.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Matching </span><span class="si">%</span><span class="s">d images'</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">num_processes</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">match_and_draw</span><span class="p">,</span> <span class="n">imgs</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
+    <span class="k">return</span>
+</code></pre>
+</div>
+
+<h3 id="list-of-references">List of references</h3>
+<ol>
+  <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/">ICPR 2012 Mitosis Detection Contest</a></li>
+  <li><a href="https://arxiv.org/abs/1512.03385">2015 paper on Deep Residual Learning for Image Recognition (ResNet, Microsoft Research)</a></li>
+  <li><a href="http://www.robots.ox.ac.uk/~vgg/research/very_deep/">Website and 2014 paper on Very Deep Convolutional Networks for Large-Scale Visual Recognition (Visual Geometry Group, Oxford U)</a></li>
+  <li><a href="https://link.springer.com/chapter/10.1007/978-3-540-77129-6_13">2007 Paper on Grayscale Template-Matching Invariant to Rotation, Scale, Translation, Brightness and Contrast (Kim &amp; Araujo)</a></li>
+  <li><a href="http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html">OpenCV template-matching tutorial in Python</a></li>
+  <li><a href="http://docs.opencv.org/trunk/d7/d4d/tutorial_py_thresholding.html">OpenCV thresholding tutorial in Python</a></li>
+  <li><a href="https://stackoverflow.com/questions/44690002/python-opencv-matchtemplate-on-grayscale-image-with-masking/44693722?noredirect=1#comment76390884_44693722]">Helpful StackOverflow explanation of OpenCV’s different matching methods</a></li>
+</ol>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-07-05T00:00:00-04:00">July 05, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595baf6db42fb7c8"></script>
+
+  <!-- <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+
+  <a href="https://plus.google.com/share?url=https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://tonyzhangnd.github.io/2017/07/Mitosis-data-processing-1.html" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a> -->
+
+  
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595baf6db42fb7c8"></script>
+
+ <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox"></div>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-&-Writing-My-First-Django-App.html" class="pagination--pager" title="My Summer Internship &amp; Writing My First Django App
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "https://tonyzhangnd.github.io/assets/images/my-summer-internship/django-logo-negative.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-&-Writing-My-First-Django-App.html" rel="permalink">My Summer Internship &amp; Writing My First Django App
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A brief post about my AI research internship in Singapore, and learning to use Django to make my first web application.
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/WhiterMeerkat"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+      <li><a href="https://facebook.com/TonyZhangND"><i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+    
+    
+      <li><a href="http://github.com/TonyZhangND"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="https://tonyzhangnd.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Tony Zhang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="https://tonyzhangnd.github.io/assets/js/main.min.js"></script>
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'tonyzhangnd';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>
