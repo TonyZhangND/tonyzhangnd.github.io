@@ -334,12 +334,32 @@
       
 
       <section class="page__content" itemprop="text">
-        <p><img src="/assets/images/template-matching/header-short.png" alt="Before-after image" />
-The problem we are trying to solve is find the exact locations of cells undergoing mitosis in histology images. These are the cells that are annotated with green arrows. In other words, given the <strong>Before</strong> image above, we want to extract data shown in <strong>After</strong>.</p>
+        <p><img src="/assets/images/template-matching/header-short.png" alt="Before-after image" /></p>
+<aside class="sidebar__right">
+<nav class="toc">
+    <header><h4 class="nav__title"><i class="fa fa-file-text"></i> Table of Contents</h4></header>
+<ul class="toc__menu" id="markdown-toc">
+  <li><a href="#the-input-data" id="markdown-toc-the-input-data">The Input Data</a></li>
+  <li><a href="#geometric-transformation-and-coalescing-algorithm" id="markdown-toc-geometric-transformation-and-coalescing-algorithm">Geometric Transformation and Coalescing Algorithm</a>    <ul>
+      <li><a href="#transform" id="markdown-toc-transform">Transform</a></li>
+      <li><a href="#coalesce" id="markdown-toc-coalesce">Coalesce</a></li>
+    </ul>
+  </li>
+  <li><a href="#putting-it-all-together" id="markdown-toc-putting-it-all-together">Putting It All Together</a></li>
+  <li><a href="#conclusion-and-takeaway" id="markdown-toc-conclusion-and-takeaway">Conclusion and Takeaway</a>    <ul>
+      <li><a href="#my-takeaway" id="markdown-toc-my-takeaway">My Takeaway</a></li>
+    </ul>
+  </li>
+  <li><a href="#complete-code" id="markdown-toc-complete-code">Complete Code</a></li>
+</ul>
+
+  </nav>
+</aside>
+<p>The problem we are trying to solve is find the exact locations of cells undergoing mitosis in histology images. These are the cells that are annotated with green arrows. In other words, given the <strong>Before</strong> image above, we want to extract data shown in <strong>After</strong>.</p>
 
 <p>In <a href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html">Part 1</a>, I have detailed how I used template matching in openCV to obtain bounding boxes on the arrows with 100% accuracy. In this post, I will describe my algorithm used to transform the bounding box information into the coordinates of the arrowheads.</p>
 
-<h2 id="the-input-data">The Input Data:</h2>
+<h2 id="the-input-data">The Input Data</h2>
 <p>We use the code in Part 1, but with one important change:</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>

@@ -334,12 +334,26 @@
       
 
       <section class="page__content" itemprop="text">
-        <p><img src="/assets/images/template-matching/header-short.png" alt="Before-after image" />
-After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.</p>
+        <p><img src="/assets/images/template-matching/header-short.png" alt="Before-after image" /></p>
+<aside class="sidebar__right">
+<nav class="toc">
+    <header><h4 class="nav__title"><i class="fa fa-file-text"></i> Table of Contents</h4></header>
+<ul class="toc__menu" id="markdown-toc">
+  <li><a href="#todays-awesome-problem" id="markdown-toc-todays-awesome-problem">Today’s Awesome Problem</a></li>
+  <li><a href="#i-have-no-clue-but-thats-awesome" id="markdown-toc-i-have-no-clue-but-thats-awesome">I Have No Clue, But That’s Awesome</a></li>
+  <li><a href="#writing-the-algorithm" id="markdown-toc-writing-the-algorithm">Writing the Algorithm</a></li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+  <li><a href="#complete-code" id="markdown-toc-complete-code">Complete Code</a></li>
+  <li><a href="#list-of-references" id="markdown-toc-list-of-references">List of references</a></li>
+</ul>
+
+  </nav>
+</aside>
+<p>After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.</p>
 
 <p>Here’s the preamble. My research group is working on training a neural network to detect mitosis (cell division) in breast cancer histological images (See <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/">ICPR 2012 Mitosis Detection Contest</a>). Apparently, mitosis count is a good measurement of the aggressiveness of cancer tumors. But mitosis detection is a very challenging task for a computer, because of its indistinctness and its variability. To the untrained eye, such as mine, a cell undergoing mitosis also looks pretty much the same as a regular cell. There are also four stages of mitosis, each with a different shape configuration. My future work involves improving our mitosis detection model. Exciting, but that is a job for another day.</p>
 
-<h2 id="todays-awesome-problem">Today’s Awesome Problem:</h2>
+<h2 id="todays-awesome-problem">Today’s Awesome Problem</h2>
 <p>Equally awesome is my current undertaking. Since this is another collaboration between IHPC and one of Singapore’s hospitals, we are training our neural net using data provided by our partner. However, the data was annotated in a very raw format, in the form of these:</p>
 
 <p><img src="/assets/images/template-matching/M21.jpg" alt="Original training image" />
@@ -364,7 +378,7 @@ After my first task of developing the Django web application at my summer intern
 
 <p>This would help me place bounding boxes on arrows, as well as the rotation information of the arrows. With a bit of trigonometry, I can then extract information about the actual location the arrows are pointing.</p>
 
-<h2 id="writing-the-algorithm">Writing the Algorithm:</h2>
+<h2 id="writing-the-algorithm">Writing the Algorithm</h2>
 <p>My template matching algorithm is summarized as so:</p>
 
 <ol>
@@ -508,8 +522,7 @@ After my first task of developing the Django web application at my summer intern
 
 <p>Also, notice that the current program may output a couple of matching points for each arrow. I would need to coalesce these points into a single point for an accurate mitosis count. I will talk about my point transformation and coalescing algorithm in <strong>Part 2</strong>!</p>
 
-<h3 id="complete-code">Complete Code</h3>
-
+<h2 id="complete-code">Complete Code</h2>
 <p>Below is the complete code for Part 1, with added error handling and print statements.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
@@ -642,7 +655,7 @@ After my first task of developing the Django web application at my summer intern
 </code></pre>
 </div>
 
-<h3 id="list-of-references">List of references</h3>
+<h2 id="list-of-references">List of references</h2>
 <ol>
   <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/">ICPR 2012 Mitosis Detection Contest</a></li>
   <li><a href="https://link.springer.com/chapter/10.1007/978-3-540-77129-6_13">2007 Paper on Grayscale Template-Matching Invariant to Rotation, Scale, Translation, Brightness and Contrast (Kim &amp; Araujo)</a></li>

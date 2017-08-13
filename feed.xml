@@ -1,9 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.5">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2017-07-30T04:20:22-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Mitosis Image Processing Part 2 - Locating Final Points of Interest</title><link href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-2.html" rel="alternate" type="text/html" title="Mitosis Image Processing Part 2 - Locating Final Points of Interest" /><published>2017-07-28T00:00:00-04:00</published><updated>2017-07-28T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2017/07/Mitosis%20Image%20Processing%202</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-2.html">&lt;p&gt;&lt;img src=&quot;/assets/images/template-matching/header-short.png&quot; alt=&quot;Before-after image&quot; /&gt;
-The problem we are trying to solve is find the exact locations of cells undergoing mitosis in histology images. These are the cells that are annotated with green arrows. In other words, given the &lt;strong&gt;Before&lt;/strong&gt; image above, we want to extract data shown in &lt;strong&gt;After&lt;/strong&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2017-08-13T00:26:54-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Mitosis Image Processing Part 2 - Locating Final Points of Interest</title><link href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-2.html" rel="alternate" type="text/html" title="Mitosis Image Processing Part 2 - Locating Final Points of Interest" /><published>2017-07-28T00:00:00-04:00</published><updated>2017-07-28T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2017/07/Mitosis%20Image%20Processing%202</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-2.html">&lt;p&gt;&lt;img src=&quot;/assets/images/template-matching/header-short.png&quot; alt=&quot;Before-after image&quot; /&gt;&lt;/p&gt;
+&lt;aside class=&quot;sidebar__right&quot;&gt;
+&lt;nav class=&quot;toc&quot;&gt;
+    &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fa fa-file-text&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
+&lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#the-input-data&quot; id=&quot;markdown-toc-the-input-data&quot;&gt;The Input Data&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#geometric-transformation-and-coalescing-algorithm&quot; id=&quot;markdown-toc-geometric-transformation-and-coalescing-algorithm&quot;&gt;Geometric Transformation and Coalescing Algorithm&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#transform&quot; id=&quot;markdown-toc-transform&quot;&gt;Transform&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#coalesce&quot; id=&quot;markdown-toc-coalesce&quot;&gt;Coalesce&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#putting-it-all-together&quot; id=&quot;markdown-toc-putting-it-all-together&quot;&gt;Putting It All Together&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion-and-takeaway&quot; id=&quot;markdown-toc-conclusion-and-takeaway&quot;&gt;Conclusion and Takeaway&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#my-takeaway&quot; id=&quot;markdown-toc-my-takeaway&quot;&gt;My Takeaway&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#complete-code&quot; id=&quot;markdown-toc-complete-code&quot;&gt;Complete Code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+  &lt;/nav&gt;
+&lt;/aside&gt;
+&lt;p&gt;The problem we are trying to solve is find the exact locations of cells undergoing mitosis in histology images. These are the cells that are annotated with green arrows. In other words, given the &lt;strong&gt;Before&lt;/strong&gt; image above, we want to extract data shown in &lt;strong&gt;After&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;In &lt;a href=&quot;https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html&quot;&gt;Part 1&lt;/a&gt;, I have detailed how I used template matching in openCV to obtain bounding boxes on the arrows with 100% accuracy. In this post, I will describe my algorithm used to transform the bounding box information into the coordinates of the arrowheads.&lt;/p&gt;
 
-&lt;h2 id=&quot;the-input-data&quot;&gt;The Input Data:&lt;/h2&gt;
+&lt;h2 id=&quot;the-input-data&quot;&gt;The Input Data&lt;/h2&gt;
 &lt;p&gt;We use the code in Part 1, but with one important change:&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;np&lt;/span&gt;
@@ -595,12 +615,26 @@ where &lt;code class=&quot;highlighter-rouge&quot;&gt;deg&lt;/code&gt; is the or
     &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Done'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><summary type="html">A detailed two-part series about extracting machine-usable data from raw images. Part 2 using data from part 1 and some geometry to locate POIs.</summary></entry><entry><title type="html">Mitosis Image Processing Part 1 - Template Matching Using OpenCV</title><link href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html" rel="alternate" type="text/html" title="Mitosis Image Processing Part 1 - Template Matching Using OpenCV" /><published>2017-07-05T00:00:00-04:00</published><updated>2017-07-05T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2017/07/Mitosis%20Image%20Processing%201</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html">&lt;p&gt;&lt;img src=&quot;/assets/images/template-matching/header-short.png&quot; alt=&quot;Before-after image&quot; /&gt;
-After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><summary type="html">A detailed two-part series about extracting machine-usable data from raw images. Part 2 using data from part 1 and some geometry to locate POIs.</summary></entry><entry><title type="html">Mitosis Image Processing Part 1 - Template Matching Using OpenCV</title><link href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html" rel="alternate" type="text/html" title="Mitosis Image Processing Part 1 - Template Matching Using OpenCV" /><published>2017-07-05T00:00:00-04:00</published><updated>2017-07-05T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2017/07/Mitosis%20Image%20Processing%201</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html">&lt;p&gt;&lt;img src=&quot;/assets/images/template-matching/header-short.png&quot; alt=&quot;Before-after image&quot; /&gt;&lt;/p&gt;
+&lt;aside class=&quot;sidebar__right&quot;&gt;
+&lt;nav class=&quot;toc&quot;&gt;
+    &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fa fa-file-text&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
+&lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#todays-awesome-problem&quot; id=&quot;markdown-toc-todays-awesome-problem&quot;&gt;Today’s Awesome Problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#i-have-no-clue-but-thats-awesome&quot; id=&quot;markdown-toc-i-have-no-clue-but-thats-awesome&quot;&gt;I Have No Clue, But That’s Awesome&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#writing-the-algorithm&quot; id=&quot;markdown-toc-writing-the-algorithm&quot;&gt;Writing the Algorithm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot; id=&quot;markdown-toc-conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#complete-code&quot; id=&quot;markdown-toc-complete-code&quot;&gt;Complete Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#list-of-references&quot; id=&quot;markdown-toc-list-of-references&quot;&gt;List of references&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+  &lt;/nav&gt;
+&lt;/aside&gt;
+&lt;p&gt;After my first task of developing the Django web application at my summer internship, my second project, to my great excitement, is a lot more algorithmically involved. It involves processing raw data annotations into a format suitable for training Machine Learning algorithms.&lt;/p&gt;
 
 &lt;p&gt;Here’s the preamble. My research group is working on training a neural network to detect mitosis (cell division) in breast cancer histological images (See &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/&quot;&gt;ICPR 2012 Mitosis Detection Contest&lt;/a&gt;). Apparently, mitosis count is a good measurement of the aggressiveness of cancer tumors. But mitosis detection is a very challenging task for a computer, because of its indistinctness and its variability. To the untrained eye, such as mine, a cell undergoing mitosis also looks pretty much the same as a regular cell. There are also four stages of mitosis, each with a different shape configuration. My future work involves improving our mitosis detection model. Exciting, but that is a job for another day.&lt;/p&gt;
 
-&lt;h2 id=&quot;todays-awesome-problem&quot;&gt;Today’s Awesome Problem:&lt;/h2&gt;
+&lt;h2 id=&quot;todays-awesome-problem&quot;&gt;Today’s Awesome Problem&lt;/h2&gt;
 &lt;p&gt;Equally awesome is my current undertaking. Since this is another collaboration between IHPC and one of Singapore’s hospitals, we are training our neural net using data provided by our partner. However, the data was annotated in a very raw format, in the form of these:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/template-matching/M21.jpg&quot; alt=&quot;Original training image&quot; /&gt;
@@ -625,7 +659,7 @@ After my first task of developing the Django web application at my summer intern
 
 &lt;p&gt;This would help me place bounding boxes on arrows, as well as the rotation information of the arrows. With a bit of trigonometry, I can then extract information about the actual location the arrows are pointing.&lt;/p&gt;
 
-&lt;h2 id=&quot;writing-the-algorithm&quot;&gt;Writing the Algorithm:&lt;/h2&gt;
+&lt;h2 id=&quot;writing-the-algorithm&quot;&gt;Writing the Algorithm&lt;/h2&gt;
 &lt;p&gt;My template matching algorithm is summarized as so:&lt;/p&gt;
 
 &lt;ol&gt;
@@ -769,8 +803,7 @@ After my first task of developing the Django web application at my summer intern
 
 &lt;p&gt;Also, notice that the current program may output a couple of matching points for each arrow. I would need to coalesce these points into a single point for an accurate mitosis count. I will talk about my point transformation and coalescing algorithm in &lt;strong&gt;Part 2&lt;/strong&gt;!&lt;/p&gt;
 
-&lt;h3 id=&quot;complete-code&quot;&gt;Complete Code&lt;/h3&gt;
-
+&lt;h2 id=&quot;complete-code&quot;&gt;Complete Code&lt;/h2&gt;
 &lt;p&gt;Below is the complete code for Part 1, with added error handling and print statements.&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
@@ -903,7 +936,7 @@ After my first task of developing the Django web application at my summer intern
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;list-of-references&quot;&gt;List of references&lt;/h3&gt;
+&lt;h2 id=&quot;list-of-references&quot;&gt;List of references&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3709417/&quot;&gt;ICPR 2012 Mitosis Detection Contest&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://link.springer.com/chapter/10.1007/978-3-540-77129-6_13&quot;&gt;2007 Paper on Grayscale Template-Matching Invariant to Rotation, Scale, Translation, Brightness and Contrast (Kim &amp;amp; Araujo)&lt;/a&gt;&lt;/li&gt;
