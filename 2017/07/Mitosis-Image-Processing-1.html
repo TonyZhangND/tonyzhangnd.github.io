@@ -202,7 +202,7 @@
     <h3 class="author__name" itemprop="name">Tony Zhang</h3>
     
       <p class="author__bio" itemprop="description">
-        CS Major. <br> Cornell University'19. <br> CS 2110 TA. <br> Snowboarder. Photographer.
+        CS, Mathematics. <br> Cornell University'19. <br> CS 2110 TA. <br> Snowboarder. Photographer.
       </p>
     
   </div>
@@ -391,7 +391,7 @@
 <p>Step 1 is trivial, as all the images had the same shade of green arrows. All I had to do was zero the non-green vectors in the RGBA matrix. I also did some parallel processing to speed this up for bulk processing of images (see complete code at bottom of page). Step 2 was likewise easy using SciPy, with this as my base template:<br />
 <img src="/assets/images/template-matching/base.png" alt="Base template" /></p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">misc</span><span class="p">,</span> <span class="n">ndimage</span>
 
@@ -425,8 +425,7 @@
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">deg</span><span class="p">)</span>
         <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="s">'tmpl</span><span class="si">%</span><span class="s">d.png'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> <span class="n">tmpl</span><span class="p">)</span>
     <span class="k">return</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Next, following this <a href="http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html">wonderful tutorial</a>, I had step 3 functioning in no time. The algorithm uses the <code class="highlighter-rouge">cv2.TM_CCORR_NORMED</code> method on greyscaled images, with a match-acceptance threshold of <code class="highlighter-rouge">&gt;0.9</code>. It worked 99% of the time. But, in accordance with the power law of programming, that remaining 1% gave the biggest headache. Some edge cases gave me unacceptable false negatives:</p>
 
@@ -466,7 +465,7 @@
 
 <p>Here is the end result and code, using <code class="highlighter-rouge">TM_SQDIFF</code> and png masks:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
 
 <span class="n">MASK_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">masks</span><span class="p">}</span>
 <span class="n">RES_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">match</span> <span class="n">results</span><span class="p">}</span>
@@ -510,8 +509,7 @@
     <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c">#eg M21_r.jpg</span>
     <span class="k">return</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Again, a method for bulk processing of images is in the complete code at the bottom of this page.</p>
 
@@ -525,10 +523,10 @@
 <h2 id="complete-code">Complete Code</h2>
 <p>Below is the complete code for Part 1, with added error handling and print statements.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">misc</span><span class="p">,</span> <span class="n">ndimage</span>
 <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
 
@@ -652,8 +650,7 @@
     <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
     <span class="k">return</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="list-of-references">List of references</h2>
 <ol>
