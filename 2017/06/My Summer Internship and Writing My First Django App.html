@@ -1,0 +1,37 @@
+<h2 id="my-summer-position">My Summer Position</h2>
+<p>This summer, I’m doing a research internship in sunny Singapore.  In particular, I’m working at the <a href="https://www.a-star.edu.sg/ihpc">Institute of High Performance Computing (IHPC),</a>  a research institute under the parent company that is the Agency for Science, Technology and Research, known as A*STAR.  </p>
+
+<p>To many who are probably unfamiliar, <a href="https://www.a-star.edu.sg">A*STAR</a> <em>“is Singapore’s lead public sector agency that spearheads economic-oriented research to advance scientific discovery and develop innovative technology”</em>. It’s a pretty cool environment, and I am working on some machine learning projects with my supervisor. </p>
+
+<p>As an AI Research Intern, the projects in which I’m involved are mostly about automating patient diagnosis through Machine Learning and Computer Vision. </p>
+
+<h2 id="my-first-django-web-app">My First Django Web App</h2>
+<p>My first task this summer was to create a ‘proof-of-concept’ web application that would demonstrate to hospitals the use of a lung cancer identification algorithm our team developed.  This algorithm is a neural net that takes in a set of DICOM images. A dicom image (Digital Imaging and Communications in Medicine) is the standard output format for X-Ray and CAT scans. An image is 2-D slice, and a set of images from a CAT scan gives a 3-D rendering of,  say,  a lung. Our algorithm then spits out the xyz-coordinates of where the cancerous tumors might be located in said lung. </p>
+
+<p>Tumor identification is traditionally done by the human eye, so it is hoped that our program can automate the process. What’s needed now is a web-based platform to serve our program to the customers. That is my job to build. </p>
+
+<p>To my delight, there already exists an open-source medical image viewer in JavaScript lying around on GitHub. We fondly call it the <a href="https://github.com/rii-mango/Papaya">Papaya Viewer</a>. No need to reinvent the wheel then!</p>
+
+<p>With a good overview of the problem, I could zoom in on the specifications. I need to develop a web-application that:</p>
+
+<ol>
+  <li>Lets the user upload a set of dicom files</li>
+  <li>Runs our cancer-identification program server-side</li>
+  <li>Displays the dicom images with Papaya, with additional buttons that let the user  zoom in onto regions identified by our detection algorithm. </li>
+</ol>
+
+<p>My web development being experience close to naught (this was before I built this website), I got to work looking up possible tools I could use. I knew it had to be dynamic application, so my choices included Ruby on Rails and Django. Since I fell in love with the <em>sheer awesomeness of Python</em> last semester writing OS projects (synchronization &amp; network programming), I went with Django. 
+(I might do a future post about why I think Python is great, and why it replaced Java as my language of choice)</p>
+
+<p>The amazing quality of Django’s documentation got me up to speed quickly, and a day of tutorials and fiddling later, I was quickly building my first web application. </p>
+
+<p>I’d show you how beautiful it looks, but in reality though, it’s a proof-of-concept, and minimally viable demo, so we’re wasting no time dressing it up. It’s only crucial that it works. Which it wonderfully does. </p>
+
+<h2 id="my-takeaways">My Takeaways</h2>
+<p>But most important to me personally, is that I learned the process of creating and deploying a web application, such as url management, utilizing modularity in HTML templates, and how MVC is applied in web development. </p>
+
+<p>I also learned what a framework like Django was about. It’s like the inverse of an API, where instead of you calling the the API, the framework calls your code (see <a href="https://martinfowler.com/articles/injection.html">Inversion of Control</a>). It’s an MVC pattern with the <em>C</em> already in place, and you only worry about the <em>M</em> and the <em>V</em>; a chef-for-hire where where you just provide the ingredients. It is awesome. </p>
+
+<p>Django does seem a bit of an overkill for the present state of my application. After all, my site has only two pages, one for uploading, and one for viewing, which sounds like a couple of HTML and static files. </p>
+
+<p>However, Django is made to be flexible and extensible. If I get the chance to return to this project, potential new features I want to add include a database to store patient data, visible to each authenticated user. And for that, Django is perfect.</p>
