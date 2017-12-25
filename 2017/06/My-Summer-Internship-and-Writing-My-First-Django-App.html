@@ -1,0 +1,584 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.4.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- Google analytics -->
+    <meta name="google-site-verification" content="6jQiHiyZAOn_4uJFMut5IHcWTijv2uESUDVnDQorEuI" />
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>My Summer Internship and Writing My First Django App - Tony Zhang</title>
+
+
+
+
+<meta name="description" content="A brief post about my AI research internship in Singapore, and learning to use Django to make my first web application.">
+
+
+
+
+<meta name="author" content="Tony Zhang">
+
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="My Summer Internship and Writing My First Django App">
+
+
+  <link rel="canonical" href="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html">
+  <meta property="og:url" content="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html">
+
+
+
+  <meta property="og:description" content="A brief post about my AI research internship in Singapore, and learning to use Django to make my first web application.">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="My Summer Internship and Writing My First Django App">
+  <meta name="twitter:description" content="A brief post about my AI research internship in Singapore, and learning to use Django to make my first web application.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/my-summer-internship/django-logo-negative.png">
+    
+  
+
+  
+    <meta name="twitter:creator" content="@Tony Zhang">
+  
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/my-summer-internship/django-logo-negative.png">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-06-20T00:00:00-04:00">
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Tony Zhang",
+      "url" : "https://tonyzhangnd.github.io",
+      "sameAs" : ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://tonyzhangnd.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://tonyzhangnd.github.io/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+    <!-- MathJax for Latex rendering -->
+    <script type="text/javascript" async src="/MathJax/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="https://tonyzhangnd.github.io/">Tony Zhang</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://tonyzhangnd.github.io/blog/">Blog</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="https://tonyzhangnd.github.io/assets/images/bio_photo.jpg" class="author__avatar" alt="Tony Zhang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        CS, Mathematics. <br> Cornell University'19. <br> CS 2110 TA. <br> Snowboarder. Photographer.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Ithaca, NY | Singapore</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:nz97@cornell.edu">
+            <meta itemprop="email" content="nz97@cornell.edu" />
+            <i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/WhiterMeerkat" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="https://www.facebook.com/TonyZhangND" itemprop="sameAs">
+            <i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/tonyzhangnd" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/TonyZhangND" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="My Summer Internship and Writing My First Django App">
+    <meta itemprop="description" content="A brief post about my AI research internship in Singapore, and learning to use Django to make my first web application.">
+    <meta itemprop="datePublished" content="June 20, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">My Summer Internship and Writing My First Django App
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <h2 id="my-summer-position">My Summer Position</h2>
+<p>This summer, I’m doing a research internship in sunny Singapore.  In particular, I’m working at the <a href="https://www.a-star.edu.sg/ihpc">Institute of High Performance Computing (IHPC),</a>  a research institute under the parent company that is the Agency for Science, Technology and Research, known as A*STAR.</p>
+
+<p>To many who are probably unfamiliar, <a href="https://www.a-star.edu.sg">A*STAR</a> <em>“is Singapore’s lead public sector agency that spearheads economic-oriented research to advance scientific discovery and develop innovative technology”</em>. It’s a pretty cool environment, and I am working on some machine learning projects with my supervisor.</p>
+
+<p>As an AI Research Intern, the projects in which I’m involved are mostly about automating patient diagnosis through Machine Learning and Computer Vision.</p>
+
+<h2 id="my-first-django-web-app">My First Django Web App</h2>
+<p>My first task this summer was to create a ‘proof-of-concept’ web application that would demonstrate to hospitals the use of a lung cancer identification algorithm our team developed.  This algorithm is a neural net that takes in a set of DICOM images. A dicom image (Digital Imaging and Communications in Medicine) is the standard output format for X-Ray and CAT scans. An image is 2-D slice, and a set of images from a CAT scan gives a 3-D rendering of,  say,  a lung. Our algorithm then spits out the xyz-coordinates of where the cancerous tumors might be located in said lung.</p>
+
+<p>Tumor identification is traditionally done by the human eye, so it is hoped that our program can automate the process. What’s needed now is a web-based platform to serve our program to the customers. That is my job to build.</p>
+
+<p>To my delight, there already exists an open-source medical image viewer in JavaScript lying around on GitHub. We fondly call it the <a href="https://github.com/rii-mango/Papaya">Papaya Viewer</a>. No need to reinvent the wheel then!</p>
+
+<p>With a good overview of the problem, I could zoom in on the specifications. I need to develop a web-application that:</p>
+
+<ol>
+  <li>Lets the user upload a set of dicom files</li>
+  <li>Runs our cancer-identification program server-side</li>
+  <li>Displays the dicom images with Papaya, with additional buttons that let the user  zoom in onto regions identified by our detection algorithm.</li>
+</ol>
+
+<p>My web development being experience close to naught (this was before I built this website), I got to work looking up possible tools I could use. I knew it had to be dynamic application, so my choices included Ruby on Rails and Django. Since I fell in love with the <em>sheer awesomeness of Python</em> last semester writing OS projects (synchronization &amp; network programming), I went with Django. 
+(I might do a future post about why I think Python is great, and why it replaced Java as my language of choice)</p>
+
+<p>The amazing quality of Django’s documentation got me up to speed quickly, and a day of tutorials and fiddling later, I was quickly building my first web application.</p>
+
+<p>I’d show you how beautiful it looks, but in reality though, it’s a proof-of-concept, and minimally viable demo, so we’re wasting no time dressing it up. It’s only crucial that it works. Which it wonderfully does.</p>
+
+<h2 id="my-takeaways">My Takeaways</h2>
+<p>But most important to me personally, is that I learned the process of creating and deploying a web application, such as url management, utilizing modularity in HTML templates, and how MVC is applied in web development.</p>
+
+<p>I also learned what a framework like Django was about. It’s like the inverse of an API, where instead of you calling the the API, the framework calls your code (see <a href="https://martinfowler.com/articles/injection.html">Inversion of Control</a>). It’s an MVC pattern with the <em>C</em> already in place, and you only worry about the <em>M</em> and the <em>V</em>; a chef-for-hire where where you just provide the ingredients. It is awesome.</p>
+
+<p>Django does seem a bit of an overkill for the present state of my application. After all, my site has only two pages, one for uploading, and one for viewing, which sounds like a couple of HTML and static files.</p>
+
+<p>However, Django is made to be flexible and extensible. If I get the chance to return to this project, potential new features I want to add include a database to store patient data, visible to each authenticated user. And for that, Django is perfect.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-20T00:00:00-04:00">June 20, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595baf6db42fb7c8"></script>
+
+  <!-- <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+
+  <a href="https://plus.google.com/share?url=https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://tonyzhangnd.github.io/2017/06/My-Summer-Internship-and-Writing-My-First-Django-App.html" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a> -->
+
+  
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-595baf6db42fb7c8"></script>
+
+ <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox"></div>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html" class="pagination--pager" title="Mitosis Image Processing Part 1 - Template Matching Using OpenCV
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "https://tonyzhangnd.github.io/assets/images/template-matching/geometry.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-2.html" rel="permalink">Mitosis Image Processing Part 2 - Locating Final Points of Interest
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A detailed two-part series about extracting machine-usable data from raw images. Part 2 using data from part 1 and some geometry to locate POIs.
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "https://tonyzhangnd.github.io/assets/images/template-matching/header-tall.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="https://tonyzhangnd.github.io/2017/07/Mitosis-Image-Processing-1.html" rel="permalink">Mitosis Image Processing Part 1 - Template Matching Using OpenCV
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/WhiterMeerkat"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+      <li><a href="https://facebook.com/TonyZhangND"><i class="fa fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+    
+    
+      <li><a href="http://github.com/TonyZhangND"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="https://tonyzhangnd.github.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Tony Zhang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="https://tonyzhangnd.github.io/assets/js/main.min.js"></script>
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'tonyzhangnd';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>
