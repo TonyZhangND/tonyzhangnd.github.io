@@ -1,4 +1,188 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2017-12-25T04:08:03-05:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Website Blocker Script - The End of Procrastination</title><link href="https://tonyzhangnd.github.io/2017/12/Website-Blocker.html" rel="alternate" type="text/html" title="Website Blocker Script - The End of Procrastination" /><published>2017-12-25T00:00:00-05:00</published><updated>2017-12-25T00:00:00-05:00</updated><id>https://tonyzhangnd.github.io/2017/12/Website%20Blocker</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/12/Website-Blocker.html">&lt;p&gt;Like most people, I too am guilty of opening my browser to look up some work related thing on the internet, but somehow find myself half an hour later watching cat videos on YouTube, not remembering what I wanted to do in the first place.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2018-01-23T16:32:10-05:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Consensus Protocol Using TLA+</title><link href="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html" rel="alternate" type="text/html" title="Consensus Protocol Using TLA+" /><published>2018-01-18T00:00:00-05:00</published><updated>2018-01-18T00:00:00-05:00</updated><id>https://tonyzhangnd.github.io/2018/01/Consensus%20TLA%20Spec</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
+&lt;nav class=&quot;toc&quot;&gt;
+    &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fa fa-file-text&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
+&lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#consensus&quot; id=&quot;markdown-toc-consensus&quot;&gt;Consensus&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tla-model&quot; id=&quot;markdown-toc-tla-model&quot;&gt;TLA+ Model&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#state-machines-and-mathematical-functions&quot; id=&quot;markdown-toc-state-machines-and-mathematical-functions&quot;&gt;State Machines and Mathematical Functions&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#init&quot; id=&quot;markdown-toc-init&quot;&gt;Init&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#next&quot; id=&quot;markdown-toc-next&quot;&gt;Next&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#checking-for-correctness&quot; id=&quot;markdown-toc-checking-for-correctness&quot;&gt;Checking for Correctness&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#concluding-remarks&quot; id=&quot;markdown-toc-concluding-remarks&quot;&gt;Concluding Remarks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+  &lt;/nav&gt;
+&lt;/aside&gt;
+
+&lt;p&gt;Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. &lt;a href=&quot;https://lamport.azurewebsites.net/tla/tla.html&quot;&gt;TLA+ is a specification language&lt;/a&gt; used to mathematically describe an algorithm, and is adopted in both &lt;a href=&quot;https://syslab.cs.washington.edu/papers/tapir-tr-v2.pdf&quot;&gt;academia&lt;/a&gt; and &lt;a href=&quot;http://lamport.azurewebsites.net/tla/amazon.html&quot;&gt;industry&lt;/a&gt;. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.&lt;/p&gt;
+
+&lt;p&gt;In this post I shall discuss a TLA+ specification of Consensus I wrote.   This specification describes the properties of Consensus at its highest level. That is, we are not concerned with &lt;em&gt;how&lt;/em&gt; a specific protocol can achieve Consensus, but &lt;em&gt;what&lt;/em&gt; properties should any solution to Consensus possess. It is thus useful for now to forget about mechanisms such as message-passing; a system that solves Consensus using extrasensory perception solves it equivalently as one using TCP.&lt;/p&gt;
+
+&lt;h2 id=&quot;consensus&quot;&gt;Consensus&lt;/h2&gt;
+&lt;p&gt;The Consensus problem is easy to state and understand. Yet it is the basic building-block of computer systems requiring coordination between agents.&lt;/p&gt;
+
+&lt;p&gt;Fundamentally, a protocol that solves Consensus in a synchronous system permitting crash failures must have the following properties.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Validity:&lt;/strong&gt; If all processes that propose a value propose &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;, then all correct processes
+eventually decide &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Agreement:&lt;/strong&gt; If a correct process decides &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;, then all correct processes eventually decide &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Integrity:&lt;/strong&gt; If a correct process decides &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;, then some process must have proposed &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Termination:&lt;/strong&gt; Every correct process eventually decides some value.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Agreement and Integrity are &lt;strong&gt;safety properties&lt;/strong&gt;: they dictate that inconsistent decisions cannot occur. Validity and Termination are &lt;strong&gt;liveness properties&lt;/strong&gt;: they prevent processes from trivially deciding, say, 0 in all cases, and from not halting.&lt;/p&gt;
+
+&lt;p&gt;For our present purpose let us consider, &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0020019000000272&quot;&gt;without loss of generality&lt;/a&gt;, Binary Consensus, in which each participant proposes either 0 or 1.&lt;/p&gt;
+
+&lt;h2 id=&quot;tla-model&quot;&gt;TLA+ Model&lt;/h2&gt;
+&lt;h3 id=&quot;state-machines-and-mathematical-functions&quot;&gt;State Machines and Mathematical Functions&lt;/h3&gt;
+&lt;p&gt;To model Consensus mathematically as in TLA+, we adopt a state machine approach. Each participant in the protocol undergoes the following state transitions:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/consensus/consensusStateMachine.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;All processes begin in the working state. They then each propose a value, either 0 or 1, to the system. After which, all correct processes then deterministically decides on one of the proposed values (we do not yet care how).&lt;/p&gt;
+
+&lt;p&gt;To express these state transitions as math, we begin by defining some constants and variables. In TLA+, we write&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONSTANTS PCS  \* The set of all processes
+
+VARIABLES   states,     \* states of each process in PCS
+            proposals,  \* proposals of each process in PCS
+            pset,       \* set of all proposals 
+            decisions   \* decision of each process in PCS
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;PCS&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;pset&lt;/script&gt; are mathematical sets. It may be intuitive at first to think of the variables &lt;script type=&quot;math/tex&quot;&gt;states&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;proposals&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;decisions&lt;/script&gt; as arrays in a programming language, mapping each process id to its respective state, proposal and decision. However, such intuition is not correct. TLA+ does not operate in the realm of memory addresses. The language of TLA+ is mathematics, and in math, arrays are functions with domain &lt;script type=&quot;math/tex&quot;&gt;\mathbb{N}&lt;/script&gt; (the natural numbers).&lt;/p&gt;
+
+&lt;p&gt;But unlike arrays, TLA+ functions do not restrict us to any particular domain. Here, I shall define &lt;script type=&quot;math/tex&quot;&gt;states&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;proposals&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;decisions&lt;/script&gt; as functions mapping &lt;script type=&quot;math/tex&quot;&gt;PCS&lt;/script&gt;, the set of all processes, to their respective state, proposal and decision values.&lt;/p&gt;
+
+&lt;h3 id=&quot;init&quot;&gt;Init&lt;/h3&gt;
+&lt;p&gt;At the heart of all state machines, and indeed any TLA+ spec, are statements describing the initial state of the system, and how it transitions from one state to the next. In my model, while each process is a state machine, the entire system as a whole is itself a state machine, and it is this global state machine we describe in TLA+. Therefore, we can think of the behavior Consensus, and indeed any system, as a sequence of state transitions&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...&lt;/script&gt;
+
+&lt;p&gt;In TLA+, we define &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; as a boolean formula describing the properties of the initial state &lt;script type=&quot;math/tex&quot;&gt;S_0&lt;/script&gt;. I describe the initial state of the Consensus as so:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;init == /\ states = [p \in PCS |-&amp;gt; &quot;working&quot;]
+        /\ proposals \in [PCS -&amp;gt; {0, 1}]
+        /\ pset = {}
+        /\ decisions = [p \in PCS |-&amp;gt; -1]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This is a logical conjunct of four statements&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;states&lt;/script&gt; is a function &lt;script type=&quot;math/tex&quot;&gt;states : PCS \rightarrow \{``working&quot;, ``proposed&quot;, ``decided&quot;\}&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;\forall p \in PCS : states(p) \mapsto ``working&quot;&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;proposals&lt;/script&gt; is some function &lt;script type=&quot;math/tex&quot;&gt;proposals : PCS \rightarrow \{0, 1\}&lt;/script&gt;. TLA+ will then iterate through all such functions.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;pset&lt;/script&gt; is the empty set.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;decisions&lt;/script&gt; is the function &lt;script type=&quot;math/tex&quot;&gt;decisions : PCS \rightarrow \{-1, 0, 1\}&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;\forall p \in PCS : decisions(p) \mapsto -1&lt;/script&gt;, with &lt;script type=&quot;math/tex&quot;&gt;-1&lt;/script&gt; as the placeholder for not having yet decided.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note that in each statement, we are not performing variable assignments. Instead, statements 1 through 4 are boolean statements. For instance, statement 1 asserts that &lt;script type=&quot;math/tex&quot;&gt;states&lt;/script&gt; is indeed the function described. And thus, the statement we call &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; is a boolean statement asserting the properties of the initial state of Consensus – any system at its initial state &lt;script type=&quot;math/tex&quot;&gt;S_0&lt;/script&gt; satisfies the initial spec of Consensus if and only if &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; is true when applied to &lt;script type=&quot;math/tex&quot;&gt;S_0&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;next&quot;&gt;Next&lt;/h3&gt;
+&lt;p&gt;While &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; asserts what must be true in &lt;script type=&quot;math/tex&quot;&gt;S_0&lt;/script&gt;, the &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; formula describes the state transition&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_i \rightarrow S_{i+1}&lt;/script&gt;
+
+&lt;p&gt;Thus intuitively, if &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; is the base case for an inductive proof, then &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; is the inductive step. If &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; is true on &lt;script type=&quot;math/tex&quot;&gt;S_0&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; is true on &lt;script type=&quot;math/tex&quot;&gt;S_i \rightarrow S_{i+1}&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;i = 0, 1, 2, 3...&lt;/script&gt;, then our system behaves correctly as specified.&lt;/p&gt;
+
+&lt;p&gt;For my Consensus spec, I split &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; into two possible actions of the system –  any process can either choose to propose a value (if it has not yet done so), or decide a value (after all processes have proposed). I write &lt;script type=&quot;math/tex&quot;&gt;propose&lt;/script&gt; as so:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;propose(p) == /\ states[p] = &quot;working&quot;
+              /\ states' = [states EXCEPT ![p] = &quot;proposed&quot;]
+              /\ pset' = pset \cup {proposals[p]}
+              /\ UNCHANGED &amp;lt;&amp;lt;proposals, decisions&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, it is the logical conjunct of four statements that say that in a transition &lt;script type=&quot;math/tex&quot;&gt;S_i \rightarrow S_{i+1}&lt;/script&gt; where process &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; proposes a value:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_i&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;states(p) \mapsto ``working&quot;&lt;/script&gt;, i.e. &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; has not yet proposed.&lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;states_{S_{i+1}}(p) \mapsto ``proposed&quot;&lt;/script&gt;, i.e. all states are unchanged except that of &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;pset&lt;/script&gt; now contains the value &lt;script type=&quot;math/tex&quot;&gt;proposal(p)&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, the functions &lt;script type=&quot;math/tex&quot;&gt;proposals&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;decisions&lt;/script&gt; are exactly those in &lt;script type=&quot;math/tex&quot;&gt;S_i&lt;/script&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Likewise, I express &lt;script type=&quot;math/tex&quot;&gt;decide&lt;/script&gt; as:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;decide(p) == /\ ~ \E r \in PCS : states[r] = &quot;working&quot;
+             /\ states[p] = &quot;proposed&quot;
+             /\ states' = [states EXCEPT ![p] = &quot;decided&quot;]
+             /\ decisions[p] = -1
+             /\ decisions' = [decisions EXCEPT ![p] = CHOOSE x \in pset : TRUE]
+             /\ UNCHANGED &amp;lt;&amp;lt;proposals, pset&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;It describes the transition where process &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; proposes a value, and is the logical conjunct of:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_i&lt;/script&gt;, there does not exist any process &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;states(q) \mapsto ``working&quot;&lt;/script&gt;, i.e. every process has proposed.&lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;states_{S_{i+1}}(p) \mapsto ``decided&quot;&lt;/script&gt;, i.e. all states are unchanged except that of &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_i&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;decisions(p) \mapsto -1&lt;/script&gt;, i.e. &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; has not yet decided.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\forall q \ne p : decisions_{S_{i+1}}(q) \mapsto decisions_{S_i}(q)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;decisions_{S_{i+1}}(p)&lt;/script&gt; maps to some deterministically chosen value from &lt;script type=&quot;math/tex&quot;&gt;pset&lt;/script&gt;. In the semantics of TLA+, this value will be the same for all processes.&lt;/li&gt;
+  &lt;li&gt;In &lt;script type=&quot;math/tex&quot;&gt;S_{i+1}&lt;/script&gt;, the functions &lt;script type=&quot;math/tex&quot;&gt;proposals&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;decisions&lt;/script&gt; are exactly those in  &lt;script type=&quot;math/tex&quot;&gt;S_i&lt;/script&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Finally, we can express &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; as simply&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;next \equiv \exists p \in PCS : propose(p) \lor decide(p)&lt;/script&gt;
+
+&lt;p&gt;which means that in any step &lt;script type=&quot;math/tex&quot;&gt;S_i \rightarrow S_{i+1}&lt;/script&gt; there exists a process &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; which either propose or decide a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;next == \E p \in PCS : propose(p) \/ decide(p)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;checking-for-correctness&quot;&gt;Checking for Correctness&lt;/h2&gt;
+&lt;p&gt;The protocol is complete. Now we want to make sure that if &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; are true on&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...&lt;/script&gt;
+
+&lt;p&gt;, then we satisfy the spec of Consensus that is &lt;strong&gt;validity&lt;/strong&gt;, &lt;strong&gt;agreement&lt;/strong&gt;, &lt;strong&gt;integrity&lt;/strong&gt; and &lt;strong&gt;termination&lt;/strong&gt;. TLA+ allows us to do exactly that by expressing these as invariants.&lt;/p&gt;
+
+&lt;p&gt;But first, we also want to make sure we did not break any type requirements by specifying the invariant &lt;script type=&quot;math/tex&quot;&gt;typeOK&lt;/script&gt;. I shall omit detailed descriptions as the syntax is similar to what I have described above.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;typeOK == /\ states \in [PCS -&amp;gt; {&quot;working&quot;, &quot;proposed&quot;, &quot;decided&quot;}]
+          /\ proposals \in [PCS -&amp;gt; {0, 1}]
+          /\ pset \subseteq {0, 1}
+          /\ decisions \in [PCS -&amp;gt; {-1, 0, 1}]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, we have the invariants&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;validity == \E v \in {0, 1} : (\A p \in PCS : proposals[p] = v) 
+                =&amp;gt; \A q \in PCS : (states[q] = &quot;decided&quot; 
+                    =&amp;gt; decisions[q] = v)
+
+agreement == \A p1, p2 \in PCS : ~ /\ decisions[p1] = 0
+                                   /\ decisions[p2] = 1
+                                  
+integrity == \A p \in PCS : 
+                (states[p] = &quot;decided&quot; 
+                =&amp;gt; \E r \in PCS : proposals[r] = decisions[p])
+
+specOK == /\ validity
+          /\ agreement
+          /\ integrity
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Here, the only syntax we have yet seen is &lt;code class=&quot;highlighter-rouge&quot;&gt;=&amp;gt;&lt;/code&gt;, which represents logical implication. Therefore, the menacing description for &lt;script type=&quot;math/tex&quot;&gt;validity&lt;/script&gt; means, quite simply, that, if there exists a value &lt;script type=&quot;math/tex&quot;&gt;v \in \{0, 1\}&lt;/script&gt; such that everyone proposed &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;, then at any time for all processes &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;, if &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; has decided, then &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; must have decided &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;But what about &lt;strong&gt;termination&lt;/strong&gt;? Well, termination means that the protocol halts. In TLA+, that is characterized as a form of deadlock, and TLA+ has built-in detection for that.&lt;/p&gt;
+
+&lt;p&gt;We then set up a TLA+ model as so, telling it to check the behavior described by &lt;script type=&quot;math/tex&quot;&gt;init&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;next&lt;/script&gt; against the invariants, and for deadlock.
+&lt;img src=&quot;/assets/images/consensus/model.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Running the model tells us what we have is correct.&lt;/p&gt;
+
+&lt;h2 id=&quot;concluding-remarks&quot;&gt;Concluding Remarks&lt;/h2&gt;
+&lt;p&gt;It does indeed seem that the Consensus protocol I have described works like magic. There is no message passing, and processes spontaneously decide on a value from a global set. Yet this is the goal. As emphasized above, this is a high-level description of what Consensus &lt;em&gt;should&lt;/em&gt; do, and not how it achieves it.&lt;/p&gt;
+
+&lt;p&gt;Of course, TLA+ also allows us to specify a particular implementation of Consensus, complete with message passing and the like. But the point of having done what we have done here is that using TLA+, we can later check any specific implementation against this high-level specification we have written. In other words, a specific instance of Consensus is correct if it implies that the general spec is satisfied. I will explore doing that in later post.&lt;/p&gt;
+
+&lt;p&gt;Lastly, TLA+ lets us pretty-print our spec, so it looks nicely formatted in latex-style math. You can check out the pretty-printed version of this spec, and the code itself, on &lt;a href=&quot;https://github.com/TonyZhangND/TLAplus/tree/master/Consensus&quot;&gt;my GitHub page&lt;/a&gt;.&lt;/p&gt;</content><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><summary type="html">Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.</summary></entry><entry><title type="html">Website Blocker Script - The End of Procrastination</title><link href="https://tonyzhangnd.github.io/2017/12/Website-Blocker.html" rel="alternate" type="text/html" title="Website Blocker Script - The End of Procrastination" /><published>2017-12-25T00:00:00-05:00</published><updated>2017-12-25T00:00:00-05:00</updated><id>https://tonyzhangnd.github.io/2017/12/Website%20Blocker</id><content type="html" xml:base="https://tonyzhangnd.github.io/2017/12/Website-Blocker.html">&lt;p&gt;Like most people, I too am guilty of opening my browser to look up some work related thing on the internet, but somehow find myself half an hour later watching cat videos on YouTube, not remembering what I wanted to do in the first place.&lt;/p&gt;
 
 &lt;p&gt;Well, such times will be vanquished. This Christmas, I present to all, the product of my crusade against unproductivity, my final procrastination activity to end all procrastination –&lt;/p&gt;
 
