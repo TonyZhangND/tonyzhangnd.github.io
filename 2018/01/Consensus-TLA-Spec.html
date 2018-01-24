@@ -467,7 +467,7 @@ VARIABLES   states,     \* states of each process in PCS
 
 <script type="math/tex; mode=display">next \equiv \exists p \in PCS : propose(p) \lor decide(p)</script>
 
-<p>which means that in any step <script type="math/tex">S_i \rightarrow S_{i+1}</script> there exists a process <script type="math/tex">p</script> which either propose or decide a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s</p>
+<p>which means that in any step <script type="math/tex">S_i \rightarrow S_{i+1}</script> there exists a process <script type="math/tex">p</script> which either proposes or decides a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>next == \E p \in PCS : propose(p) \/ decide(p)
 </code></pre></div></div>
@@ -514,9 +514,9 @@ specOK == /\ validity
 <p>Running the model tells us what we have is correct.</p>
 
 <h2 id="concluding-remarks">Concluding Remarks</h2>
-<p>It does indeed seem that the Consensus protocol I have described works like magic. There is no message passing, and processes spontaneously decide on a value from a global set. Yet this is the goal. As emphasized above, this is a high-level description of what Consensus <em>should</em> do, and not how it achieves it.</p>
+<p>It does seem that the Consensus protocol I have described works like magic. There is no message passing, and processes spontaneously decide on a value from a global set. Yet this is the goal. As emphasized above, this is a high-level description of what Consensus <em>should</em> do, and not how it achieves it.</p>
 
-<p>Of course, TLA+ also allows us to specify a particular implementation of Consensus, complete with message passing and the like. But the point of having done what we have done here is that using TLA+, we can later check any specific implementation against this high-level specification we have written. In other words, a specific instance of Consensus is correct if it implies that the general spec is satisfied. I will explore doing that in later post.</p>
+<p>Of course, TLA+ also allows us to specify a particular implementation of Consensus, complete with message passing and the like. But the point of having done as we did here is that using TLA+, we can later check any specific implementation against this high-level specification we have written. In other words, a specific instance of Consensus is correct if it implies that the general spec is satisfied. I will explore doing that in later post.</p>
 
 <p>Lastly, TLA+ lets us pretty-print our spec, so it looks nicely formatted in latex-style math. You can check out the pretty-printed version of this spec, and the code itself, on <a href="https://github.com/TonyZhangND/TLAplus/tree/master/Consensus">my GitHub page</a>.</p>
 
