@@ -410,7 +410,7 @@ VARIABLES   states,     \* states of each process in PCS
 <p>This is a logical conjunct of four statements</p>
 
 <ol>
-  <li><script type="math/tex">states</script> is a function <script type="math/tex">states : PCS \rightarrow \{``working", ``proposed", ``decided"\}</script> such that <script type="math/tex">\forall p \in PCS : states(p) \mapsto ``working"</script>.</li>
+  <li><script type="math/tex">states</script> is the function <script type="math/tex">states : PCS \rightarrow \{``working", ``proposed", ``decided"\}</script> such that <script type="math/tex">\forall p \in PCS : states(p) \mapsto ``working"</script>.</li>
   <li><script type="math/tex">proposals</script> is some function <script type="math/tex">proposals : PCS \rightarrow \{0, 1\}</script>. TLA+ will then iterate through all such functions.</li>
   <li><script type="math/tex">pset</script> is the empty set.</li>
   <li><script type="math/tex">decisions</script> is the function <script type="math/tex">decisions : PCS \rightarrow \{-1, 0, 1\}</script> such that <script type="math/tex">\forall p \in PCS : decisions(p) \mapsto -1</script>, with <script type="math/tex">-1</script> as the placeholder for not having yet decided.</li>
