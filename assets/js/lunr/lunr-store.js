@@ -28,4 +28,4 @@ var store = [{
         "excerpt":"Table of Contents Why Travis CI? Tutorial 1. Accounts and Permissions 2. Travis YAML file 3. Build Script Viola! Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo...","categories": [],
         "tags": ["tutorial","web"],
         "url": "https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html",
-        "teaser":null}]
+        "teaser":"https://tonyzhangnd.github.io/assets/images/travis-jekyll/banner.png"}]
