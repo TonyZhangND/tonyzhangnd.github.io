@@ -475,13 +475,13 @@
   </nav>
 </aside>
 
-<p>Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo was a bearable task, what took some fumbling was hooking it back up with Travis CI, the continuous  I use to automatically build and deploy this site. So to save ourselves from crawling over documentation all over again, this post will be a tutorial of how to deploy a Jekyll website to GitHub Pages using Travis CI. If you are not already familiar with Jekyll and GitHub pages, here is some great <a href="https://jekyllrb.com">documentation</a>.</p>
+<p>Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo was a bearable task, what took some fumbling was hooking it back up with Travis CI, the continuous integration tool I use to automatically build and deploy this site. So to save ourselves from crawling over documentation all over again, this post will be a tutorial of how to deploy a Jekyll website to GitHub Pages using Travis CI. If you are not already familiar with Jekyll and GitHub pages, here is some great <a href="https://jekyllrb.com">documentation</a>.</p>
 
 <p><img src="/assets/images/travis-jekyll/banner.png" alt="" /></p>
 
 <h2 id="why-travis-ci">Why Travis CI?</h2>
 
-<p>Before we dive into the mechanics, it helps to understand why we want to use Travis CI with Jekyll and GitHub Pages. Indeed, GitHub Pages can already build your Jekyll website from its repo and deploy it for you. The catch, however, is that GitHub is wary of building third-party Ruby plugins. One way around this is to first build your site locally, and GitHub pages will happily deploy the pushed result. But Travis CI helps us avoid this extra step – by hooking it up with our source repo, Travis CI can automatically build it and push it to a deployment repo whenever there is an update. We also won’t have to maintain a “_site/” directory in the source repo. Neat!</p>
+<p>Before we dive into the mechanics, it helps to understand why we want to use Travis CI with Jekyll and GitHub Pages. Indeed, GitHub Pages is capable of building your Jekyll website from its source repo. The catch, however, is that GitHub is wary of executing third-party Ruby plugins. One way around this is to first build your site locally, and GitHub pages will happily deploy the pushed result. But Travis CI helps us avoid this extra step – by hooking it up with our source repo, Travis CI can automatically build it and push it to a deployment repo whenever there is an update. We also won’t have to maintain a “_site/” directory in the source repo. Neat!</p>
 
 <h2 id="tutorial">Tutorial</h2>
 
@@ -582,7 +582,7 @@
 
 	</span><span class="nb">cd </span>_site
 	git config <span class="nt">--global</span> user.name <span class="s2">"Travis CI"</span>
-    git config <span class="nt">--global</span> user.email nz97@cornell.edu
+    git config <span class="nt">--global</span> user.email alice@example.com
 	git add <span class="nt">-A</span>
 	git status
 	git commit <span class="nt">-m</span> <span class="s2">"Lastest site built on successful travis build </span><span class="nv">$TRAVIS_BUILD_NUMBER</span><span class="s2"> auto-pushed to github"</span>
@@ -612,9 +612,9 @@ main
 
 <p><img src="/assets/images/travis-jekyll/result.png" alt="" /></p>
 
-<p>With all the above in place, any push to the <code class="highlighter-rouge">build</code> branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon shows Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.</p>
+<p>With all the above in place, any push to the <code class="highlighter-rouge">build</code> branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon show Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.</p>
 
-<p>With some experience, Travis CI is a joy to work with. I can see how beyond our current context, Travis and can be used for automated testing and deployment in my future projects.</p>
+<p>With some experience, Travis CI is a joy to use. I can see how beyond our current context, Travis and can be used for automated testing and deployment in my future projects.</p>
 
         
       </section>
