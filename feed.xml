@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2018-06-28T00:33:25-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Tutorial - Integrating Jekyll and Travis CI</title><link href="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html" rel="alternate" type="text/html" title="Tutorial - Integrating Jekyll and Travis CI" /><published>2018-06-27T00:00:00-04:00</published><updated>2018-06-27T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2018/06/Integrating%20Jekyll%20and%20Travis%20CI</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2018-06-28T00:43:39-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Tutorial - Integrating Jekyll and Travis CI</title><link href="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html" rel="alternate" type="text/html" title="Tutorial - Integrating Jekyll and Travis CI" /><published>2018-06-27T00:00:00-04:00</published><updated>2018-06-27T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2018/06/Integrating%20Jekyll%20and%20Travis%20CI</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
 &lt;nav class=&quot;toc&quot;&gt;
     &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fas fa-file-alt&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
 &lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
@@ -9,7 +9,7 @@
       &lt;li&gt;&lt;a href=&quot;#3-build-script&quot; id=&quot;markdown-toc-3-build-script&quot;&gt;3. Build Script&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#viola&quot; id=&quot;markdown-toc-viola&quot;&gt;Viola!&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#voilà&quot; id=&quot;markdown-toc-voilà&quot;&gt;Voilà!&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
   &lt;/nav&gt;
@@ -148,7 +148,7 @@ main
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;viola&quot;&gt;Viola!&lt;/h2&gt;
+&lt;h2 id=&quot;voilà&quot;&gt;Voilà!&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/travis-jekyll/result.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
