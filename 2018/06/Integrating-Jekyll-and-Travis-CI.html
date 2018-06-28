@@ -1,0 +1,900 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Tutorial - Integrating Jekyll and Travis CI - Tony Zhang</title>
+<meta name="description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="Tutorial - Integrating Jekyll and Travis CI">
+<meta property="og:url" content="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+
+  <meta property="og:description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/home-page.png">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="Tutorial - Integrating Jekyll and Travis CI">
+  <meta name="twitter:description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/home-page.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2018-06-27T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- Google analytics -->
+    <meta name="google-site-verification" content="6jQiHiyZAOn_4uJFMut5IHcWTijv2uESUDVnDQorEuI" />
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Tutorial - Integrating Jekyll and Travis CI - Tony Zhang</title>
+<meta name="description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="Tutorial - Integrating Jekyll and Travis CI">
+<meta property="og:url" content="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+
+  <meta property="og:description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/home-page.png">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="Tutorial - Integrating Jekyll and Travis CI">
+  <meta name="twitter:description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/home-page.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2018-06-27T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- MathJax for Latex rendering -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Tony Zhang</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://tonyzhangnd.github.io/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://tonyzhangnd.github.io/blog/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/bio_photo.jpg" alt="Tony Zhang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        CS, Mathematics. <br> Cornell University'19. <br> CS 2110 TA. <br> Snowboarder. Photographer.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Ithaca, NY | Singapore</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:nz97@cornell.edu">
+            <meta itemprop="email" content="nz97@cornell.edu" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/WhiterMeerkat" itemprop="sameAs">
+            <i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="https://www.facebook.com/TonyZhangND" itemprop="sameAs">
+            <i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/tonyzhangnd" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/TonyZhangND" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Tutorial - Integrating Jekyll and Travis CI">
+    <meta itemprop="description" content="A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.">
+    <meta itemprop="datePublished" content="June 27, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Tutorial - Integrating Jekyll and Travis CI
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <aside class="sidebar__right">
+<nav class="toc">
+    <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Table of Contents</h4></header>
+<ul class="toc__menu" id="markdown-toc">
+  <li><a href="#why-travis-ci" id="markdown-toc-why-travis-ci">Why Travis CI?</a></li>
+  <li><a href="#tutorial" id="markdown-toc-tutorial">Tutorial</a>    <ul>
+      <li><a href="#1-accounts-and-permissions" id="markdown-toc-1-accounts-and-permissions">1. Accounts and Permissions</a></li>
+      <li><a href="#2-travis-yaml-file" id="markdown-toc-2-travis-yaml-file">2. Travis YAML file</a></li>
+      <li><a href="#3-build-script" id="markdown-toc-3-build-script">3. Build Script</a></li>
+    </ul>
+  </li>
+  <li><a href="#viola" id="markdown-toc-viola">Viola!</a></li>
+</ul>
+
+  </nav>
+</aside>
+
+<p>Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo was a bearable task, what took some fumbling was hooking it back up with Travis CI, the continuous  I use to automatically build and deploy this site. So to save ourselves from crawling over documentation all over again, this post will be a tutorial of how to deploy a Jekyll website to GitHub Pages using Travis CI. If you are not already familiar with Jekyll and GitHub pages, here is some great <a href="https://jekyllrb.com">documentation</a>.</p>
+
+<p><img src="/assets/images/travis-jekyll/banner.png" alt="" /></p>
+
+<h2 id="why-travis-ci">Why Travis CI?</h2>
+
+<p>Before we dive into the mechanics, it helps to understand why we want to use Travis CI with Jekyll and GitHub Pages. Indeed, GitHub Pages can already build your Jekyll website from its repo and deploy it for you. The catch, however, is that GitHub is wary of building third-party Ruby plugins. One way around this is to first build your site locally, and GitHub pages will happily deploy the pushed result. But Travis CI helps us avoid this extra step – by hooking it up with our source repo, Travis CI can automatically build it and push it to a deployment repo whenever there is an update. We also won’t have to maintain a “_site/” directory in the source repo. Neat!</p>
+
+<h2 id="tutorial">Tutorial</h2>
+
+<p>For the purpose of this tutorial, I assume that <code class="highlighter-rouge">alice/website_source</code> is the source repository for our website, and we want to deploy to the repo <code class="highlighter-rouge">alice/alice.github.io</code>.</p>
+
+<h3 id="1-accounts-and-permissions">1. Accounts and Permissions</h3>
+
+<p>The first step is to create an account on Travis and link it with your GitHub account. You should then see a list of your GitHub repositories in your Travis home page. Simply click on the toggle to activate Travis for <code class="highlighter-rouge">alice/website_source</code>.</p>
+
+<p>Crucially, we now want to give Travis permission to pull and push to your GitHub repos. To do so:</p>
+
+<ol>
+  <li>Go to the Settings page on GitHub (hint: click on your profile picture on the top right corner). Click on “Developer Settings” in the left pane, and then “Personal Access Tokens”.</li>
+  <li>Generate a new token and set its authorization scope. The ‘repo’ scope is sufficient for our purposes. Copy the generated token.</li>
+  <li>We now want to save this token as an Environment Variable in Travis. In Travis CI, go to the settings for <code class="highlighter-rouge">alice/website_source</code>.</li>
+  <li>Under the “Environment Variables” section, paste your token into the “value” field, and give it a name. Remember this name as it will be needed later. Let’s call it <code class="highlighter-rouge">MY_WEBSITE</code>.</li>
+</ol>
+
+<p><img src="/assets/images/travis-jekyll/EnvironmentVariables.png" alt="Saving your personal access token to Travis CI" /></p>
+
+<h3 id="2-travis-yaml-file">2. Travis YAML file</h3>
+
+<p>In the root directory of your source repo, you need to include a file called “.travis.yml”. This instructs Travis what to do at each stage of the job lifecycle. Details can be found <a href="https://docs.travis-ci.com/user/customizing-the-build">here</a>, but for now, this is the file we want to have:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">language</span><span class="pi">:</span> <span class="s">ruby</span>
+
+<span class="na">cache</span><span class="pi">:</span> <span class="s">bundler</span> 
+
+<span class="na">before_install</span><span class="pi">:</span> <span class="s">gem update bundler</span>
+
+<span class="na">install</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">bundle install</span>
+
+<span class="na">script</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">./setup"</span>
+
+<span class="na">branches</span><span class="pi">:</span>
+  <span class="na">only</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">build</span>
+
+<span class="na">sudo</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div></div>
+
+<p>This tells Travis the following:</p>
+
+<ol>
+  <li>This is a Ruby project.</li>
+  <li>Cache the Bundler output to reduce log clutter.</li>
+  <li>Run <code class="highlighter-rouge">gem update bundler</code> and then <code class="highlighter-rouge">bundle install</code>, to make sure we are using the latest gems.</li>
+  <li>Run the “setup” script, which we shall soon write.</li>
+  <li>Only build from the <code class="highlighter-rouge">build</code> branch of <code class="highlighter-rouge">alice/website_source</code>.</li>
+</ol>
+
+<p>I find the last point useful in maintaining an always-working <code class="highlighter-rouge">master</code> branch, by  avoiding pushing new changes to my <code class="highlighter-rouge">master</code> branch only to later have Travis tell me that it breaks the build.</p>
+
+<h3 id="3-build-script">3. Build Script</h3>
+
+<p>Finally, we write the “setup” script that we want Travis CI to run whenever we push a change to “alice/website_source”. This is the script in the <code class="highlighter-rouge">./setup</code> command we specified in the YAML file. The script and explanation I present here is credited to <a href="http://pauldambra.github.io/using-travis-to-build-jekyll.html">Paul D’Ambra</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nv">DEPLOY_REPO</span><span class="o">=</span><span class="s2">"https://</span><span class="k">${</span><span class="nv">MY_WEBSITE</span><span class="k">}</span><span class="s2">@github.com/alice/alice.github.io.git"</span>
+
+<span class="k">function </span>main <span class="o">{</span>
+	clean
+	get_current_site
+	build_site
+	deploy
+<span class="o">}</span>
+
+<span class="k">function </span>clean <span class="o">{</span> 
+	<span class="nb">echo</span> <span class="s2">"cleaning _site folder"</span>
+	<span class="k">if</span> <span class="o">[</span> <span class="nt">-d</span> <span class="s2">"_site"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span><span class="nb">rm</span> <span class="nt">-Rf</span> _site<span class="p">;</span> <span class="k">fi</span> 
+<span class="o">}</span>
+
+<span class="k">function </span>get_current_site <span class="o">{</span> 
+	<span class="nb">echo</span> <span class="s2">"getting latest site"</span>
+	git clone <span class="nt">--depth</span> 1 <span class="nv">$DEPLOY_REPO</span> _site 
+<span class="o">}</span>
+
+<span class="k">function </span>build_site <span class="o">{</span> 
+	<span class="nb">echo</span> <span class="s2">"building site"</span>
+	bundle <span class="nb">exec </span>jekyll build <span class="nt">--trace</span>
+<span class="o">}</span>
+
+<span class="k">function </span>deploy <span class="o">{</span>
+	<span class="nb">echo</span> <span class="s2">"deploying changes"</span>
+
+	<span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="s2">"</span><span class="nv">$TRAVIS_PULL_REQUEST</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+	    </span><span class="nb">echo</span> <span class="s2">"except don't publish site for pull requests"</span>
+	    <span class="nb">exit </span>0
+	<span class="k">fi  
+
+	if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$TRAVIS_BRANCH</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"build"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+	    </span><span class="nb">echo</span> <span class="s2">"except we should only publish the build branch. stopping here"</span>
+	    <span class="nb">exit </span>0
+	<span class="k">fi
+
+	</span><span class="nb">cd </span>_site
+	git config <span class="nt">--global</span> user.name <span class="s2">"Travis CI"</span>
+    git config <span class="nt">--global</span> user.email nz97@cornell.edu
+	git add <span class="nt">-A</span>
+	git status
+	git commit <span class="nt">-m</span> <span class="s2">"Lastest site built on successful travis build </span><span class="nv">$TRAVIS_BUILD_NUMBER</span><span class="s2"> auto-pushed to github"</span>
+	git push <span class="nv">$DEPLOY_REPO</span> master:master
+<span class="o">}</span>
+
+main
+</code></pre></div></div>
+
+<p>First, the script sets the variable <code class="highlighter-rouge">DEPLOY_REPO="https://${MY_WEBSITE}@github.com/alice/alice.github.io.git"</code>, where <code class="highlighter-rouge">MY_WEBSITE</code> is the name of the Environment Variable we set in Travis in step 1.4.</p>
+
+<p>Next, the script runs four functions in sequence:</p>
+
+<ol>
+  <li><code class="highlighter-rouge">clean</code>: delete the “_site/” directory if it exists.</li>
+  <li><code class="highlighter-rouge">get_current_site</code>: clone the latest revision of the deployment repository into “_site/”.</li>
+  <li><code class="highlighter-rouge">build_site</code>: run Jekyll build.</li>
+  <li><code class="highlighter-rouge">deploy</code>:
+    <ul>
+      <li>Don’t deploy pull requests, and deploy only the <code class="highlighter-rouge">build</code> branch.</li>
+      <li>Push the built site into the deployment repo.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="viola">Viola!</h2>
+
+<p><img src="/assets/images/travis-jekyll/result.png" alt="" /></p>
+
+<p>With all the above in place, any push to the <code class="highlighter-rouge">build</code> branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon shows Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.</p>
+
+<p>With some experience, Travis CI is a joy to work with. I can see how beyond our current context, Travis and can be used for automated testing and deployment in my future projects.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#tutorial" class="page__taxonomy-item" rel="tag">tutorial</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
+    
+    </span>
+  </p>
+
+
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-06-27T00:00:00-04:00">June 27, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=Tutorial+-+Integrating+Jekyll+and+Travis+CI%20https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F06%2FIntegrating-Jekyll-and-Travis-CI.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F06%2FIntegrating-Jekyll-and-Travis-CI.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F06%2FIntegrating-Jekyll-and-Travis-CI.html" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F06%2FIntegrating-Jekyll-and-Travis-CI.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2018/01/Consensus-TLA-Spec.html" class="pagination--pager" title="Consensus Protocol Using TLA+
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/consensus/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/2018/01/Consensus-TLA-Spec.html" rel="permalink">Consensus Protocol Using TLA+
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mat...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/cat_using_com.jpg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/2017/12/Website-Blocker.html" rel="permalink">Website Blocker Script - The End of Procrastination
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Like most people, I too am guilty of opening my browser to look up some work related thing on the internet, but somehow find myself half an hour later watchi...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/template-matching/geometry.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/2017/07/Mitosis-Image-Processing-2.html" rel="permalink">Mitosis Image Processing Part 2 - Locating Final Points of Interest
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  14 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A detailed two-part series about extracting machine-usable data from raw images. Part 2 using data from part 1 and some geometry to locate POIs.
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/template-matching/header-tall.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/2017/07/Mitosis-Image-Processing-1.html" rel="permalink">Mitosis Image Processing Part 1 - Template Matching Using OpenCV
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A detailed two-part series about extracting machine-usable data from raw images. Part 1 focuses on placing bounding boxes on target features.
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/WhiterMeerkat"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+      <li><a href="https://www.facebook.com/TonyZhangND"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+    
+    
+      <li><a href="https://github.com/TonyZhangND"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/2018/06/Integrating Jekyll and Travis CI"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://tonyzhangnd.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  </body>
+</html>

@@ -1,4 +1,160 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2018-06-27T23:19:53-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Consensus Protocol Using TLA+</title><link href="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html" rel="alternate" type="text/html" title="Consensus Protocol Using TLA+" /><published>2018-01-18T00:00:00-05:00</published><updated>2018-01-18T00:00:00-05:00</updated><id>https://tonyzhangnd.github.io/2018/01/Consensus%20TLA%20Spec</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2018-06-28T00:17:33-04:00</updated><id>https://tonyzhangnd.github.io/</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Zhang. Computer Science (CS) major at Cornell University</subtitle><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><entry><title type="html">Tutorial - Integrating Jekyll and Travis CI</title><link href="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html" rel="alternate" type="text/html" title="Tutorial - Integrating Jekyll and Travis CI" /><published>2018-06-27T00:00:00-04:00</published><updated>2018-06-27T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2018/06/Integrating%20Jekyll%20and%20Travis%20CI</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
+&lt;nav class=&quot;toc&quot;&gt;
+    &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fas fa-file-alt&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
+&lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#why-travis-ci&quot; id=&quot;markdown-toc-why-travis-ci&quot;&gt;Why Travis CI?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tutorial&quot; id=&quot;markdown-toc-tutorial&quot;&gt;Tutorial&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#1-accounts-and-permissions&quot; id=&quot;markdown-toc-1-accounts-and-permissions&quot;&gt;1. Accounts and Permissions&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#2-travis-yaml-file&quot; id=&quot;markdown-toc-2-travis-yaml-file&quot;&gt;2. Travis YAML file&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#3-build-script&quot; id=&quot;markdown-toc-3-build-script&quot;&gt;3. Build Script&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#viola&quot; id=&quot;markdown-toc-viola&quot;&gt;Viola!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+  &lt;/nav&gt;
+&lt;/aside&gt;
+
+&lt;p&gt;Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo was a bearable task, what took some fumbling was hooking it back up with Travis CI, the continuous  I use to automatically build and deploy this site. So to save ourselves from crawling over documentation all over again, this post will be a tutorial of how to deploy a Jekyll website to GitHub Pages using Travis CI. If you are not already familiar with Jekyll and GitHub pages, here is some great &lt;a href=&quot;https://jekyllrb.com&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/travis-jekyll/banner.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;why-travis-ci&quot;&gt;Why Travis CI?&lt;/h2&gt;
+
+&lt;p&gt;Before we dive into the mechanics, it helps to understand why we want to use Travis CI with Jekyll and GitHub Pages. Indeed, GitHub Pages can already build your Jekyll website from its repo and deploy it for you. The catch, however, is that GitHub is wary of building third-party Ruby plugins. One way around this is to first build your site locally, and GitHub pages will happily deploy the pushed result. But Travis CI helps us avoid this extra step – by hooking it up with our source repo, Travis CI can automatically build it and push it to a deployment repo whenever there is an update. We also won’t have to maintain a “_site/” directory in the source repo. Neat!&lt;/p&gt;
+
+&lt;h2 id=&quot;tutorial&quot;&gt;Tutorial&lt;/h2&gt;
+
+&lt;p&gt;For the purpose of this tutorial, I assume that &lt;code class=&quot;highlighter-rouge&quot;&gt;alice/website_source&lt;/code&gt; is the source repository for our website, and we want to deploy to the repo &lt;code class=&quot;highlighter-rouge&quot;&gt;alice/alice.github.io&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-accounts-and-permissions&quot;&gt;1. Accounts and Permissions&lt;/h3&gt;
+
+&lt;p&gt;The first step is to create an account on Travis and link it with your GitHub account. You should then see a list of your GitHub repositories in your Travis home page. Simply click on the toggle to activate Travis for &lt;code class=&quot;highlighter-rouge&quot;&gt;alice/website_source&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Crucially, we now want to give Travis permission to pull and push to your GitHub repos. To do so:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Go to the Settings page on GitHub (hint: click on your profile picture on the top right corner). Click on “Developer Settings” in the left pane, and then “Personal Access Tokens”.&lt;/li&gt;
+  &lt;li&gt;Generate a new token and set its authorization scope. The ‘repo’ scope is sufficient for our purposes. Copy the generated token.&lt;/li&gt;
+  &lt;li&gt;We now want to save this token as an Environment Variable in Travis. In Travis CI, go to the settings for &lt;code class=&quot;highlighter-rouge&quot;&gt;alice/website_source&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Under the “Environment Variables” section, paste your token into the “value” field, and give it a name. Remember this name as it will be needed later. Let’s call it &lt;code class=&quot;highlighter-rouge&quot;&gt;MY_WEBSITE&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/travis-jekyll/EnvironmentVariables.png&quot; alt=&quot;Saving your personal access token to Travis CI&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-travis-yaml-file&quot;&gt;2. Travis YAML file&lt;/h3&gt;
+
+&lt;p&gt;In the root directory of your source repo, you need to include a file called “.travis.yml”. This instructs Travis what to do at each stage of the job lifecycle. Details can be found &lt;a href=&quot;https://docs.travis-ci.com/user/customizing-the-build&quot;&gt;here&lt;/a&gt;, but for now, this is the file we want to have:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ruby&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bundler&lt;/span&gt; 
+
+&lt;span class=&quot;na&quot;&gt;before_install&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gem update bundler&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bundle install&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;./setup&quot;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;build&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This tells Travis the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;This is a Ruby project.&lt;/li&gt;
+  &lt;li&gt;Cache the Bundler output to reduce log clutter.&lt;/li&gt;
+  &lt;li&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;gem update bundler&lt;/code&gt; and then &lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install&lt;/code&gt;, to make sure we are using the latest gems.&lt;/li&gt;
+  &lt;li&gt;Run the “setup” script, which we shall soon write.&lt;/li&gt;
+  &lt;li&gt;Only build from the &lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt; branch of &lt;code class=&quot;highlighter-rouge&quot;&gt;alice/website_source&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I find the last point useful in maintaining an always-working &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; branch, by  avoiding pushing new changes to my &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; branch only to later have Travis tell me that it breaks the build.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-build-script&quot;&gt;3. Build Script&lt;/h3&gt;
+
+&lt;p&gt;Finally, we write the “setup” script that we want Travis CI to run whenever we push a change to “alice/website_source”. This is the script in the &lt;code class=&quot;highlighter-rouge&quot;&gt;./setup&lt;/code&gt; command we specified in the YAML file. The script and explanation I present here is credited to &lt;a href=&quot;http://pauldambra.github.io/using-travis-to-build-jekyll.html&quot;&gt;Paul D’Ambra&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;DEPLOY_REPO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;MY_WEBSITE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@github.com/alice/alice.github.io.git&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;main &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	clean
+	get_current_site
+	build_site
+	deploy
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;clean &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;cleaning _site folder&quot;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_site&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Rf&lt;/span&gt; _site&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt; 
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;get_current_site &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;getting latest site&quot;&lt;/span&gt;
+	git clone &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt; 1 &lt;span class=&quot;nv&quot;&gt;$DEPLOY_REPO&lt;/span&gt; _site 
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;build_site &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;building site&quot;&lt;/span&gt;
+	bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build &lt;span class=&quot;nt&quot;&gt;--trace&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;deploy &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deploying changes&quot;&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-z&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TRAVIS_PULL_REQUEST&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
+	    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;except don't publish site for pull requests&quot;&lt;/span&gt;
+	    &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+	&lt;span class=&quot;k&quot;&gt;fi  
+
+	if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TRAVIS_BRANCH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;build&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
+	    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;except we should only publish the build branch. stopping here&quot;&lt;/span&gt;
+	    &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+	&lt;span class=&quot;k&quot;&gt;fi
+
+	&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;_site
+	git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; user.name &lt;span class=&quot;s2&quot;&gt;&quot;Travis CI&quot;&lt;/span&gt;
+    git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; user.email nz97@cornell.edu
+	git add &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt;
+	git status
+	git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Lastest site built on successful travis build &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TRAVIS_BUILD_NUMBER&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; auto-pushed to github&quot;&lt;/span&gt;
+	git push &lt;span class=&quot;nv&quot;&gt;$DEPLOY_REPO&lt;/span&gt; master:master
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+main
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;First, the script sets the variable &lt;code class=&quot;highlighter-rouge&quot;&gt;DEPLOY_REPO=&quot;https://${MY_WEBSITE}@github.com/alice/alice.github.io.git&quot;&lt;/code&gt;, where &lt;code class=&quot;highlighter-rouge&quot;&gt;MY_WEBSITE&lt;/code&gt; is the name of the Environment Variable we set in Travis in step 1.4.&lt;/p&gt;
+
+&lt;p&gt;Next, the script runs four functions in sequence:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;clean&lt;/code&gt;: delete the “_site/” directory if it exists.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get_current_site&lt;/code&gt;: clone the latest revision of the deployment repository into “_site/”.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;build_site&lt;/code&gt;: run Jekyll build.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;deploy&lt;/code&gt;:
+    &lt;ul&gt;
+      &lt;li&gt;Don’t deploy pull requests, and deploy only the &lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt; branch.&lt;/li&gt;
+      &lt;li&gt;Push the built site into the deployment repo.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;viola&quot;&gt;Viola!&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/travis-jekyll/result.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With all the above in place, any push to the &lt;code class=&quot;highlighter-rouge&quot;&gt;build&lt;/code&gt; branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon shows Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.&lt;/p&gt;
+
+&lt;p&gt;With some experience, Travis CI is a joy to work with. I can see how beyond our current context, Travis and can be used for automated testing and deployment in my future projects.&lt;/p&gt;</content><author><name>Tony Zhang</name><email>nz97@cornell.edu</email></author><category term="tutorial" /><category term="web" /><summary type="html">A tutorial on automated build and deployment of Jekyll websites to GitHub Pages using Travis CI.</summary></entry><entry><title type="html">Consensus Protocol Using TLA+</title><link href="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html" rel="alternate" type="text/html" title="Consensus Protocol Using TLA+" /><published>2018-01-18T00:00:00-05:00</published><updated>2018-01-18T00:00:00-05:00</updated><id>https://tonyzhangnd.github.io/2018/01/Consensus%20TLA%20Spec</id><content type="html" xml:base="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">&lt;aside class=&quot;sidebar__right&quot;&gt;
 &lt;nav class=&quot;toc&quot;&gt;
     &lt;header&gt;&lt;h4 class=&quot;nav__title&quot;&gt;&lt;i class=&quot;fas fa-file-alt&quot;&gt;&lt;/i&gt; Table of Contents&lt;/h4&gt;&lt;/header&gt;
 &lt;ul class=&quot;toc__menu&quot; id=&quot;markdown-toc&quot;&gt;
