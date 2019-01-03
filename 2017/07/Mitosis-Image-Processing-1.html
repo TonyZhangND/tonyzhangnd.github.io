@@ -543,8 +543,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">GREEN</span><span class="p">):</span>
                 <span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c">#eg M21_s.jpg</span>
-    <span class="k">return</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c1">#eg M21_s.jpg
+</span>    <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">make_templates</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s">'base.png'</span><span class="p">):</span>
     <span class="s">""" Makes templates for rotational-deg=0...359 from base in TMPL_DIR.
@@ -601,9 +601,9 @@
 <span class="n">RES_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">match</span> <span class="n">results</span><span class="p">}</span>
 
 <span class="n">MATCH_THRESH</span> <span class="o">=</span> <span class="mi">11</span>
-<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c">#specifies degree-interval at which to match</span>
-<span class="c">#Match thresholds and resolution were empirically tuned</span>
-
+<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1">#specifies degree-interval at which to match
+#Match thresholds and resolution were empirically tuned
+</span>
 <span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
     <span class="s">""" Makes masks from tmpl{0...359}.png in TMPL_DIR.
     Saves masks as mask{0...359}.png in MASK_DIR
@@ -635,10 +635,10 @@
         <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
             <span class="k">print</span><span class="p">(</span><span class="s">'Match for deg{}, pt({}, {}), sqdiff {}'</span><span class="o">.</span>
-                <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+                <span class="nb">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
     <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c">#eg M21_r.jpg</span>
-    <span class="k">return</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c1">#eg M21_r.jpg
+</span>    <span class="k">return</span>
 </code></pre></div></div>
 
 <p>Again, a method for bulk processing of images is in the complete code at the bottom of this page.</p>
@@ -668,9 +668,9 @@
 
 <span class="n">GREEN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">89</span><span class="p">,</span> <span class="mi">248</span><span class="p">,</span>  <span class="mi">89</span><span class="p">])</span>
 <span class="n">MATCH_THRESH</span> <span class="o">=</span> <span class="mi">11</span>
-<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c">#specifies degree-interval at which to match</span>
-<span class="c">#Match thresholds and resolution were empirically tuned</span>
-
+<span class="n">MATCH_RES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1">#specifies degree-interval at which to match
+#Match thresholds and resolution were empirically tuned
+</span>
 <span class="k">def</span> <span class="nf">strip</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="s">""" Removes background from img_name in IMG_DIR, leaving only green arrows.
     Saves stripped image in STRIPPED_DIR, as img_name's'.jpg """</span>
@@ -686,8 +686,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">GREEN</span><span class="p">):</span>
                 <span class="n">arr</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">])</span>
     <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c">#eg M21_s.jpg</span>
-    <span class="k">return</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_s.jpg'</span><span class="p">),</span> <span class="n">arr</span><span class="p">)</span> <span class="c1">#eg M21_s.jpg
+</span>    <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">strip_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="s">""" Applies strip() to all images in IMG_DIR.
@@ -728,7 +728,7 @@
             <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tmpl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">print</span><span class="p">(</span><span class="s">'Failed to make mask {0}. tmpl{0}.png is not found.'</span><span class="o">.</span>
-                <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">))</span>
+                <span class="nb">format</span><span class="p">(</span><span class="n">deg</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ret2</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">tmpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> 
                 <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="o">+</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
@@ -760,10 +760,10 @@
             <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">loc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="p">(</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">'Match for deg{}, pt({}, {}), sqdiff {}'</span><span class="o">.</span>
-                    <span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+                    <span class="nb">format</span><span class="p">(</span><span class="n">deg</span><span class="p">,</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">res</span><span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
     <span class="n">img_name</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c">#eg M21_r.jpg</span>
-    <span class="k">return</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RES_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="o">+</span><span class="s">'_r.jpg'</span><span class="p">),</span> <span class="n">img_rgb</span><span class="p">)</span> <span class="c1">#eg M21_r.jpg
+</span>    <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">num_imgs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="s">""" Applies match() to all images in STRIPPED_DIR.
@@ -1015,7 +1015,7 @@
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2018 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2019 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
