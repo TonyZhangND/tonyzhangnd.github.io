@@ -28,4 +28,9 @@ var store = [{
         "excerpt":"Table of Contents Why Travis CI? Tutorial 1. Accounts and Permissions 2. Travis YAML file 3. Build Script Voilà! Recently, I had to setup this entire website all over again because how I had first done so was causing issues with upgrading its themes. While migrating to a new repo...","categories": [],
         "tags": ["tutorial","web"],
         "url": "https://tonyzhangnd.github.io/2018/06/Integrating-Jekyll-and-Travis-CI.html",
-        "teaser":"https://tonyzhangnd.github.io/assets/images/travis-jekyll/banner.png"}]
+        "teaser":"https://tonyzhangnd.github.io/assets/images/travis-jekyll/banner.png"},{
+        "title": "GoOvid -- Software-Defined Distributed Systems",
+        "excerpt":"Configuring and deploying distributed systems might be a difficult task, but it doesn’t have to be this way. Ovid is a contained-based framework for composing distributed services that aimed to simplify such endeavours. This post introduces GoOvid (open-source github link) – a complete redesign of the original Ovid written in...","categories": [],
+        "tags": ["tutorial","web","distributed systems"],
+        "url": "https://tonyzhangnd.github.io/2019/09/GoOvid.html",
+        "teaser":"https://tonyzhangnd.github.io/assets/images/ovid.jpg"}]
