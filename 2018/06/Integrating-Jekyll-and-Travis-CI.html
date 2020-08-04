@@ -306,18 +306,18 @@
       
 
       
-        <img src="/assets/images/bio_photo.jpg" alt="Tony Zhang" itemprop="image">
+        <img src="/assets/images/bio_photo.jpg" alt="Nuda "Tony" Zhang" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+      <h3 class="author__name" itemprop="name">Nuda "Tony" Zhang</h3>
     
     
       <p class="author__bio" itemprop="description">
-        CS Ph.D. student <br> Distributed sytems Jedi-in-training <br> UMich @ Ann Arbor
+        CS Ph.D. student <br> Distributed sytems, and the verification thereof <br> UMich @ Ann Arbor
       </p>
     
   </div>
@@ -477,19 +477,19 @@
 
 <h2 id="tutorial">Tutorial</h2>
 
-<p>For the purpose of this tutorial, I assume that <code class="highlighter-rouge">alice/website_source</code> is the source repository for our website, and we want to deploy to the repo <code class="highlighter-rouge">alice/alice.github.io</code>.</p>
+<p>For the purpose of this tutorial, I assume that <code class="language-plaintext highlighter-rouge">alice/website_source</code> is the source repository for our website, and we want to deploy to the repo <code class="language-plaintext highlighter-rouge">alice/alice.github.io</code>.</p>
 
 <h3 id="1-accounts-and-permissions">1. Accounts and Permissions</h3>
 
-<p>The first step is to create an account on Travis and link it with your GitHub account. You should then see a list of your GitHub repositories in your Travis home page. Simply click on the toggle to activate Travis for <code class="highlighter-rouge">alice/website_source</code>.</p>
+<p>The first step is to create an account on Travis and link it with your GitHub account. You should then see a list of your GitHub repositories in your Travis home page. Simply click on the toggle to activate Travis for <code class="language-plaintext highlighter-rouge">alice/website_source</code>.</p>
 
 <p>Crucially, we now want to give Travis permission to pull and push to your GitHub repos. To do so:</p>
 
 <ol>
   <li>Go to the Settings page on GitHub (hint: click on your profile picture on the top right corner). Click on “Developer Settings” in the left pane, and then “Personal Access Tokens”.</li>
   <li>Generate a new token and set its authorization scope. The ‘repo’ scope is sufficient for our purposes. Copy the generated token.</li>
-  <li>We now want to save this token as an Environment Variable in Travis. In Travis CI, go to the settings for <code class="highlighter-rouge">alice/website_source</code>.</li>
-  <li>Under the “Environment Variables” section, paste your token into the “value” field, and give it a name. Remember this name as it will be needed later. Let’s call it <code class="highlighter-rouge">MY_WEBSITE</code>.</li>
+  <li>We now want to save this token as an Environment Variable in Travis. In Travis CI, go to the settings for <code class="language-plaintext highlighter-rouge">alice/website_source</code>.</li>
+  <li>Under the “Environment Variables” section, paste your token into the “value” field, and give it a name. Remember this name as it will be needed later. Let’s call it <code class="language-plaintext highlighter-rouge">MY_WEBSITE</code>.</li>
 </ol>
 
 <p><img src="/assets/images/travis-jekyll/EnvironmentVariables.png" alt="Saving your personal access token to Travis CI" /></p>
@@ -522,16 +522,16 @@
 <ol>
   <li>This is a Ruby project.</li>
   <li>Cache the Bundler output to reduce log clutter.</li>
-  <li>Run <code class="highlighter-rouge">gem update bundler</code> and then <code class="highlighter-rouge">bundle install</code>, to make sure we are using the latest gems.</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">gem update bundler</code> and then <code class="language-plaintext highlighter-rouge">bundle install</code>, to make sure we are using the latest gems.</li>
   <li>Run the “setup” script, which we shall soon write.</li>
-  <li>Only build from the <code class="highlighter-rouge">build</code> branch of <code class="highlighter-rouge">alice/website_source</code>.</li>
+  <li>Only build from the <code class="language-plaintext highlighter-rouge">build</code> branch of <code class="language-plaintext highlighter-rouge">alice/website_source</code>.</li>
 </ol>
 
-<p>I find the last point useful in maintaining an always-working <code class="highlighter-rouge">master</code> branch, by  avoiding pushing new changes to my <code class="highlighter-rouge">master</code> branch only to later have Travis tell me that it breaks the build.</p>
+<p>I find the last point useful in maintaining an always-working <code class="language-plaintext highlighter-rouge">master</code> branch, by  avoiding pushing new changes to my <code class="language-plaintext highlighter-rouge">master</code> branch only to later have Travis tell me that it breaks the build.</p>
 
 <h3 id="3-build-script">3. Build Script</h3>
 
-<p>Finally, we write the “setup” script that we want Travis CI to run whenever we push a change to “alice/website_source”. This is the script in the <code class="highlighter-rouge">./setup</code> command we specified in the YAML file. The script and explanation I present here is credited to <a href="http://pauldambra.github.io/using-travis-to-build-jekyll.html">Paul D’Ambra</a>.</p>
+<p>Finally, we write the “setup” script that we want Travis CI to run whenever we push a change to “alice/website_source”. This is the script in the <code class="language-plaintext highlighter-rouge">./setup</code> command we specified in the YAML file. The script and explanation I present here is credited to <a href="http://pauldambra.github.io/using-travis-to-build-jekyll.html">Paul D’Ambra</a>.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set</span> <span class="nt">-e</span>
 
@@ -584,17 +584,17 @@
 main
 </code></pre></div></div>
 
-<p>First, the script sets the variable <code class="highlighter-rouge">DEPLOY_REPO="https://${MY_WEBSITE}@github.com/alice/alice.github.io.git"</code>, where <code class="highlighter-rouge">MY_WEBSITE</code> is the name of the Environment Variable we set in Travis in step 1.4.</p>
+<p>First, the script sets the variable <code class="language-plaintext highlighter-rouge">DEPLOY_REPO="https://${MY_WEBSITE}@github.com/alice/alice.github.io.git"</code>, where <code class="language-plaintext highlighter-rouge">MY_WEBSITE</code> is the name of the Environment Variable we set in Travis in step 1.4.</p>
 
 <p>Next, the script runs four functions in sequence:</p>
 
 <ol>
-  <li><code class="highlighter-rouge">clean</code>: delete the “_site/” directory if it exists.</li>
-  <li><code class="highlighter-rouge">get_current_site</code>: clone the latest revision of the deployment repository into “_site/”.</li>
-  <li><code class="highlighter-rouge">build_site</code>: run Jekyll build.</li>
-  <li><code class="highlighter-rouge">deploy</code>:
+  <li><code class="language-plaintext highlighter-rouge">clean</code>: delete the “_site/” directory if it exists.</li>
+  <li><code class="language-plaintext highlighter-rouge">get_current_site</code>: clone the latest revision of the deployment repository into “_site/”.</li>
+  <li><code class="language-plaintext highlighter-rouge">build_site</code>: run Jekyll build.</li>
+  <li><code class="language-plaintext highlighter-rouge">deploy</code>:
     <ul>
-      <li>Don’t deploy pull requests, and deploy only the <code class="highlighter-rouge">build</code> branch.</li>
+      <li>Don’t deploy pull requests, and deploy only the <code class="language-plaintext highlighter-rouge">build</code> branch.</li>
       <li>Push the built site into the deployment repo.</li>
     </ul>
   </li>
@@ -604,7 +604,7 @@ main
 
 <p><img src="/assets/images/travis-jekyll/result.png" alt="" /></p>
 
-<p>With all the above in place, any push to the <code class="highlighter-rouge">build</code> branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon show Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.</p>
+<p>With all the above in place, any push to the <code class="language-plaintext highlighter-rouge">build</code> branch of my source repository will trigger a job in Travis CI. The fancy live log and busy yellow icon show Travis hard at work. When the built site is pushed to my deployment repo, the job will turn a satisfying green.</p>
 
 <p>With some experience, Travis CI is a joy to use. I can see how beyond our current context, Travis and can be used for automated testing and deployment in my future projects.</p>
 
@@ -872,7 +872,7 @@ main
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

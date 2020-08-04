@@ -306,18 +306,18 @@
       
 
       
-        <img src="/assets/images/bio_photo.jpg" alt="Tony Zhang" itemprop="image">
+        <img src="/assets/images/bio_photo.jpg" alt="Nuda "Tony" Zhang" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+      <h3 class="author__name" itemprop="name">Nuda "Tony" Zhang</h3>
     
     
       <p class="author__bio" itemprop="description">
-        CS Ph.D. student <br> Distributed sytems Jedi-in-training <br> UMich @ Ann Arbor
+        CS Ph.D. student <br> Distributed sytems, and the verification thereof <br> UMich @ Ann Arbor
       </p>
     
   </div>
@@ -478,10 +478,10 @@
 <p>Fundamentally, a protocol that solves Consensus in a synchronous system permitting crash failures must have the following properties.</p>
 
 <ol>
-  <li><strong>Validity:</strong> If all processes that propose a value propose <script type="math/tex">v</script>, then all correct processes
-eventually decide <script type="math/tex">v</script>.</li>
-  <li><strong>Agreement:</strong> If a correct process decides <script type="math/tex">v</script>, then all correct processes eventually decide <script type="math/tex">v</script>.</li>
-  <li><strong>Integrity:</strong> If a correct process decides <script type="math/tex">v</script>, then some process must have proposed <script type="math/tex">v</script>.</li>
+  <li><strong>Validity:</strong> If all processes that propose a value propose \(v\), then all correct processes
+eventually decide \(v\).</li>
+  <li><strong>Agreement:</strong> If a correct process decides \(v\), then all correct processes eventually decide \(v\).</li>
+  <li><strong>Integrity:</strong> If a correct process decides \(v\), then some process must have proposed \(v\).</li>
   <li><strong>Termination:</strong> Every correct process eventually decides some value.</li>
 </ol>
 
@@ -499,7 +499,7 @@ eventually decide <script type="math/tex">v</script>.</li>
 
 <p>To express these state transitions as math, we begin by defining some constants and variables. In TLA+, we write</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONSTANTS PCS  \* The set of all processes
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONSTANTS PCS  \* The set of all processes
 
 VARIABLES   states,     \* states of each process in PCS
             proposals,  \* proposals of each process in PCS
@@ -507,18 +507,18 @@ VARIABLES   states,     \* states of each process in PCS
             decisions   \* decision of each process in PCS
 </code></pre></div></div>
 
-<p><script type="math/tex">PCS</script> and <script type="math/tex">pset</script> are mathematical sets. It may be intuitive at first to think of the variables <script type="math/tex">states</script>, <script type="math/tex">proposals</script> and <script type="math/tex">decisions</script> as arrays in a programming language, mapping each process id to its respective state, proposal and decision. However, such intuition is not correct. TLA+ does not operate in the realm of memory addresses. The language of TLA+ is mathematics, and in math, arrays are functions with domain <script type="math/tex">\mathbb{N}</script> (the natural numbers).</p>
+<p>\(PCS\) and \(pset\) are mathematical sets. It may be intuitive at first to think of the variables \(states\), \(proposals\) and \(decisions\) as arrays in a programming language, mapping each process id to its respective state, proposal and decision. However, such intuition is not correct. TLA+ does not operate in the realm of memory addresses. The language of TLA+ is mathematics, and in math, arrays are functions with domain \(\mathbb{N}\) (the natural numbers).</p>
 
-<p>But unlike arrays, TLA+ functions do not restrict us to any particular domain. Here, I shall define <script type="math/tex">states</script>, <script type="math/tex">proposals</script> and <script type="math/tex">decisions</script> as functions mapping <script type="math/tex">PCS</script>, the set of all processes, to their respective state, proposal and decision values.</p>
+<p>But unlike arrays, TLA+ functions do not restrict us to any particular domain. Here, I shall define \(states\), \(proposals\) and \(decisions\) as functions mapping \(PCS\), the set of all processes, to their respective state, proposal and decision values.</p>
 
 <h3 id="init">Init</h3>
 <p>At the heart of all state machines, and indeed any TLA+ spec, are statements describing the initial state of the system, and how it transitions from one state to the next. In my model, while each process is a state machine, the entire system as a whole is itself a state machine, and it is this global state machine we describe in TLA+. Therefore, we can think of the behavior Consensus, and indeed any system, as a sequence of state transitions</p>
 
-<script type="math/tex; mode=display">S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...</script>
+\[S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...\]
 
-<p>In TLA+, we define <script type="math/tex">init</script> as a boolean formula describing the properties of the initial state <script type="math/tex">S_0</script>. I describe the initial state of the Consensus as so:</p>
+<p>In TLA+, we define \(init\) as a boolean formula describing the properties of the initial state \(S_0\). I describe the initial state of the Consensus as so:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>init == /\ states = [p \in PCS |-&gt; "working"]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>init == /\ states = [p \in PCS |-&gt; "working"]
         /\ proposals \in [PCS -&gt; {0, 1}]
         /\ pset = {}
         /\ decisions = [p \in PCS |-&gt; -1]
@@ -526,78 +526,78 @@ VARIABLES   states,     \* states of each process in PCS
 <p>This is a logical conjunct of four statements</p>
 
 <ol>
-  <li><script type="math/tex">states</script> is the function <script type="math/tex">states : PCS \rightarrow \{``working", ``proposed", ``decided"\}</script> such that <script type="math/tex">\forall p \in PCS : states(p) \mapsto ``working"</script>.</li>
-  <li><script type="math/tex">proposals</script> is some function <script type="math/tex">proposals : PCS \rightarrow \{0, 1\}</script>. TLA+ will then iterate through all such functions.</li>
-  <li><script type="math/tex">pset</script> is the empty set.</li>
-  <li><script type="math/tex">decisions</script> is the function <script type="math/tex">decisions : PCS \rightarrow \{-1, 0, 1\}</script> such that <script type="math/tex">\forall p \in PCS : decisions(p) \mapsto -1</script>, with <script type="math/tex">-1</script> as the placeholder for not having yet decided.</li>
+  <li>\(states\) is the function \(states : PCS \rightarrow \{``working", ``proposed", ``decided"\}\) such that \(\forall p \in PCS : states(p) \mapsto ``working"\).</li>
+  <li>\(proposals\) is some function \(proposals : PCS \rightarrow \{0, 1\}\). TLA+ will then iterate through all such functions.</li>
+  <li>\(pset\) is the empty set.</li>
+  <li>\(decisions\) is the function \(decisions : PCS \rightarrow \{-1, 0, 1\}\) such that \(\forall p \in PCS : decisions(p) \mapsto -1\), with \(-1\) as the placeholder for not having yet decided.</li>
 </ol>
 
-<p>Note that in each statement, we are not performing variable assignments. Instead, statements 1 through 4 are boolean statements. For instance, statement 1 asserts that <script type="math/tex">states</script> is indeed the function described. And thus, the statement we call <script type="math/tex">init</script> is a boolean statement asserting the properties of the initial state of Consensus – any system at its initial state <script type="math/tex">S_0</script> satisfies the initial spec of Consensus if and only if <script type="math/tex">init</script> is true when applied to <script type="math/tex">S_0</script>.</p>
+<p>Note that in each statement, we are not performing variable assignments. Instead, statements 1 through 4 are boolean statements. For instance, statement 1 asserts that \(states\) is indeed the function described. And thus, the statement we call \(init\) is a boolean statement asserting the properties of the initial state of Consensus – any system at its initial state \(S_0\) satisfies the initial spec of Consensus if and only if \(init\) is true when applied to \(S_0\).</p>
 
 <h3 id="next">Next</h3>
-<p>While <script type="math/tex">init</script> asserts what must be true in <script type="math/tex">S_0</script>, the <script type="math/tex">next</script> formula describes the state transition</p>
+<p>While \(init\) asserts what must be true in \(S_0\), the \(next\) formula describes the state transition</p>
 
-<script type="math/tex; mode=display">S_i \rightarrow S_{i+1}</script>
+\[S_i \rightarrow S_{i+1}\]
 
-<p>Thus intuitively, if <script type="math/tex">init</script> is the base case for an inductive proof, then <script type="math/tex">next</script> is the inductive step. If <script type="math/tex">init</script> is true on <script type="math/tex">S_0</script>, and <script type="math/tex">next</script> is true on <script type="math/tex">S_i \rightarrow S_{i+1}</script> for all <script type="math/tex">i = 0, 1, 2, 3...</script>, then our system behaves correctly as specified.</p>
+<p>Thus intuitively, if \(init\) is the base case for an inductive proof, then \(next\) is the inductive step. If \(init\) is true on \(S_0\), and \(next\) is true on \(S_i \rightarrow S_{i+1}\) for all \(i = 0, 1, 2, 3...\), then our system behaves correctly as specified.</p>
 
-<p>For my Consensus spec, I split <script type="math/tex">next</script> into two possible actions of the system –  any process can either choose to propose a value (if it has not yet done so), or decide a value (after all processes have proposed). I write <script type="math/tex">propose</script> as so:</p>
+<p>For my Consensus spec, I split \(next\) into two possible actions of the system –  any process can either choose to propose a value (if it has not yet done so), or decide a value (after all processes have proposed). I write \(propose\) as so:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>propose(p) == /\ states[p] = "working"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>propose(p) == /\ states[p] = "working"
               /\ states' = [states EXCEPT ![p] = "proposed"]
               /\ pset' = pset \cup {proposals[p]}
               /\ UNCHANGED &lt;&lt;proposals, decisions&gt;&gt;
 </code></pre></div></div>
 
-<p>Again, it is the logical conjunct of four statements that say that in a transition <script type="math/tex">S_i \rightarrow S_{i+1}</script> where process <script type="math/tex">p</script> proposes a value:</p>
+<p>Again, it is the logical conjunct of four statements that say that in a transition \(S_i \rightarrow S_{i+1}\) where process \(p\) proposes a value:</p>
 <ol>
-  <li>In <script type="math/tex">S_i</script>, <script type="math/tex">states(p) \mapsto ``working"</script>, i.e. <script type="math/tex">p</script> has not yet proposed.</li>
-  <li>In <script type="math/tex">S_{i+1}</script>, <script type="math/tex">\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)</script> and <script type="math/tex">states_{S_{i+1}}(p) \mapsto ``proposed"</script>, i.e. all states are unchanged except that of <script type="math/tex">p</script>.</li>
-  <li>In <script type="math/tex">S_{i+1}</script>, <script type="math/tex">pset</script> now contains the value <script type="math/tex">proposal(p)</script>.</li>
-  <li>In <script type="math/tex">S_{i+1}</script>, the functions <script type="math/tex">proposals</script> and <script type="math/tex">decisions</script> are exactly those in <script type="math/tex">S_i</script>.</li>
+  <li>In \(S_i\), \(states(p) \mapsto ``working"\), i.e. \(p\) has not yet proposed.</li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)\) and \(states_{S_{i+1}}(p) \mapsto ``proposed"\), i.e. all states are unchanged except that of \(p\).</li>
+  <li>In \(S_{i+1}\), \(pset\) now contains the value \(proposal(p)\).</li>
+  <li>In \(S_{i+1}\), the functions \(proposals\) and \(decisions\) are exactly those in \(S_i\).</li>
 </ol>
 
-<p>Likewise, I express <script type="math/tex">decide</script> as:</p>
+<p>Likewise, I express \(decide\) as:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decide(p) == /\ ~ \E r \in PCS : states[r] = "working"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decide(p) == /\ ~ \E r \in PCS : states[r] = "working"
              /\ states[p] = "proposed"
              /\ states' = [states EXCEPT ![p] = "decided"]
              /\ decisions[p] = -1
              /\ decisions' = [decisions EXCEPT ![p] = CHOOSE x \in pset : TRUE]
              /\ UNCHANGED &lt;&lt;proposals, pset&gt;&gt;
 </code></pre></div></div>
-<p>It describes the transition where process <script type="math/tex">p</script> proposes a value, and is the logical conjunct of:</p>
+<p>It describes the transition where process \(p\) proposes a value, and is the logical conjunct of:</p>
 <ol>
-  <li>In <script type="math/tex">S_i</script>, there does not exist any process <script type="math/tex">q</script> such that <script type="math/tex">states(q) \mapsto ``working"</script>, i.e. every process has proposed.</li>
-  <li>In <script type="math/tex">S_{i+1}</script>, <script type="math/tex">\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)</script> and <script type="math/tex">states_{S_{i+1}}(p) \mapsto ``decided"</script>, i.e. all states are unchanged except that of <script type="math/tex">p</script>.</li>
+  <li>In \(S_i\), there does not exist any process \(q\) such that \(states(q) \mapsto ``working"\), i.e. every process has proposed.</li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)\) and \(states_{S_{i+1}}(p) \mapsto ``decided"\), i.e. all states are unchanged except that of \(p\).</li>
   <li>
     <ol>
-      <li>In <script type="math/tex">S_i</script>, <script type="math/tex">decisions(p) \mapsto -1</script>, i.e. <script type="math/tex">p</script> has not yet decided.</li>
+      <li>In \(S_i\), \(decisions(p) \mapsto -1\), i.e. \(p\) has not yet decided.</li>
     </ol>
   </li>
-  <li>In <script type="math/tex">S_{i+1}</script>, <script type="math/tex">\forall q \ne p : decisions_{S_{i+1}}(q) \mapsto decisions_{S_i}(q)</script> and <script type="math/tex">decisions_{S_{i+1}}(p)</script> maps to some deterministically chosen value from <script type="math/tex">pset</script>. In the semantics of TLA+, this value will be the same for all processes.</li>
-  <li>In <script type="math/tex">S_{i+1}</script>, the functions <script type="math/tex">proposals</script> and <script type="math/tex">decisions</script> are exactly those in  <script type="math/tex">S_i</script>.</li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : decisions_{S_{i+1}}(q) \mapsto decisions_{S_i}(q)\) and \(decisions_{S_{i+1}}(p)\) maps to some deterministically chosen value from \(pset\). In the semantics of TLA+, this value will be the same for all processes.</li>
+  <li>In \(S_{i+1}\), the functions \(proposals\) and \(decisions\) are exactly those in  \(S_i\).</li>
 </ol>
 
-<p>Finally, we can express <script type="math/tex">next</script> as simply</p>
+<p>Finally, we can express \(next\) as simply</p>
 
-<script type="math/tex; mode=display">next \equiv \exists p \in PCS : propose(p) \lor decide(p)</script>
+\[next \equiv \exists p \in PCS : propose(p) \lor decide(p)\]
 
-<p>which means that in any step <script type="math/tex">S_i \rightarrow S_{i+1}</script> there exists a process <script type="math/tex">p</script> which either proposes or decides a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s</p>
+<p>which means that in any step \(S_i \rightarrow S_{i+1}\) there exists a process \(p\) which either proposes or decides a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>next == \E p \in PCS : propose(p) \/ decide(p)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>next == \E p \in PCS : propose(p) \/ decide(p)
 </code></pre></div></div>
 
 <h2 id="checking-for-correctness">Checking for Correctness</h2>
-<p>The protocol is complete. Now we want to make sure that if <script type="math/tex">init</script> and <script type="math/tex">next</script> are true on</p>
+<p>The protocol is complete. Now we want to make sure that if \(init\) and \(next\) are true on</p>
 
-<script type="math/tex; mode=display">S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...</script>
+\[S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...\]
 
 <p>, then we satisfy the spec of Consensus that is <strong>validity</strong>, <strong>agreement</strong>, <strong>integrity</strong> and <strong>termination</strong>. TLA+ allows us to do exactly that by expressing these as invariants.</p>
 
-<p>But first, we also want to make sure we did not break any type requirements by specifying the invariant <script type="math/tex">typeOK</script>. I shall omit detailed descriptions as the syntax is similar to what I have described above.</p>
+<p>But first, we also want to make sure we did not break any type requirements by specifying the invariant \(typeOK\). I shall omit detailed descriptions as the syntax is similar to what I have described above.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>typeOK == /\ states \in [PCS -&gt; {"working", "proposed", "decided"}]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>typeOK == /\ states \in [PCS -&gt; {"working", "proposed", "decided"}]
           /\ proposals \in [PCS -&gt; {0, 1}]
           /\ pset \subseteq {0, 1}
           /\ decisions \in [PCS -&gt; {-1, 0, 1}]
@@ -605,7 +605,7 @@ VARIABLES   states,     \* states of each process in PCS
 
 <p>Finally, we have the invariants</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>validity == \E v \in {0, 1} : (\A p \in PCS : proposals[p] = v) 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>validity == \E v \in {0, 1} : (\A p \in PCS : proposals[p] = v) 
                 =&gt; \A q \in PCS : (states[q] = "decided" 
                     =&gt; decisions[q] = v)
 
@@ -620,11 +620,11 @@ specOK == /\ validity
           /\ agreement
           /\ integrity
 </code></pre></div></div>
-<p>Here, the only syntax we have yet seen is <code class="highlighter-rouge">=&gt;</code>, which represents logical implication. Therefore, the menacing description for <script type="math/tex">validity</script> means, quite simply, that, if there exists a value <script type="math/tex">v \in \{0, 1\}</script> such that everyone proposed <script type="math/tex">v</script>, then at any time for all processes <script type="math/tex">q</script>, if <script type="math/tex">q</script> has decided, then <script type="math/tex">q</script> must have decided <script type="math/tex">v</script>.</p>
+<p>Here, the only syntax we have yet seen is <code class="language-plaintext highlighter-rouge">=&gt;</code>, which represents logical implication. Therefore, the menacing description for \(validity\) means, quite simply, that, if there exists a value \(v \in \{0, 1\}\) such that everyone proposed \(v\), then at any time for all processes \(q\), if \(q\) has decided, then \(q\) must have decided \(v\).</p>
 
 <p>But what about <strong>termination</strong>? Well, termination means that the protocol halts. In TLA+, that is characterized as a form of deadlock, and TLA+ has built-in detection for that.</p>
 
-<p>We then set up a TLA+ model as so, telling it to check the behavior described by <script type="math/tex">init</script> and <script type="math/tex">next</script> against the invariants, and for deadlock.
+<p>We then set up a TLA+ model as so, telling it to check the behavior described by \(init\) and \(next\) against the invariants, and for deadlock.
 <img src="/assets/images/consensus/model.png" alt="" /></p>
 
 <p>Running the model tells us what we have is correct.</p>
@@ -879,7 +879,7 @@ specOK == /\ validity
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
