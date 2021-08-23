@@ -342,8 +342,6 @@
           
         
           
-            <li><a href="https://www.facebook.com/TonyZhangND" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
-          
         
           
             <li><a href="https://github.com/TonyZhangND" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
@@ -682,7 +680,7 @@
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     """</span>
-    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">IMG_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'M[0-9]*.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">IMG_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s">'M[0-9]*.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Stripping background from %d images'</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">num_processes</span><span class="p">)</span>
     <span class="n">pool</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">strip</span><span class="p">,</span> <span class="n">imgs</span><span class="p">)</span>
@@ -758,7 +756,7 @@
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     """</span>
-    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'M[0-9]*_s.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s">'M[0-9]*_s.jpg'</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Matching %d images'</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">num_processes</span><span class="p">)</span>
     <span class="n">pool</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">match_and_draw</span><span class="p">,</span> <span class="n">imgs</span><span class="p">)</span>
@@ -1019,7 +1017,7 @@
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2020 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2021 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
