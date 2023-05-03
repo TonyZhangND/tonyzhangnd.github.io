@@ -1,6 +1,6 @@
 set -e
 
-DEPLOY_REPO="https://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@github.com/TonyZhangND/tonyzhangnd.github.io.git"
+DEPLOY_REPO="https://${DEPLOY_TOKEN}@github.com/TonyZhangND/tonyzhangnd.github.io.git"
 
 function main {
 	bundle update
