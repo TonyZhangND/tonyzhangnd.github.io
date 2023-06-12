@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2023-05-31T16:23:14-04:00</updated><id>https://tonyzhangnd.github.io/feed.xml</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Nuda Zhang. PhD student at University of Michigan -- Ann Arboor (UMich)</subtitle><author><name>Nuda &quot;Tony&quot; Zhang</name><email>nudzhang@umich.edu</email></author><entry><title type="html">GoOvid – Software-Defined Distributed Systems</title><link href="https://tonyzhangnd.github.io/2019/09/GoOvid.html" rel="alternate" type="text/html" title="GoOvid – Software-Defined Distributed Systems" /><published>2019-09-26T00:00:00-04:00</published><updated>2019-09-26T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2019/09/GoOvid</id><content type="html" xml:base="https://tonyzhangnd.github.io/2019/09/GoOvid.html"><![CDATA[<p>Configuring and deploying distributed systems might be a difficult task, but it doesn’t have to be this way. 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://tonyzhangnd.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tonyzhangnd.github.io/" rel="alternate" type="text/html" /><updated>2023-06-11T21:04:53-04:00</updated><id>https://tonyzhangnd.github.io/feed.xml</id><title type="html">Tony Zhang</title><subtitle>Personal website of Tony Nuda Zhang. PhD student at University of Michigan -- Ann Arboor (UMich)</subtitle><author><name>Nuda &quot;Tony&quot; Zhang</name><email>nudzhang@umich.edu</email></author><entry><title type="html">GoOvid – Software-Defined Distributed Systems</title><link href="https://tonyzhangnd.github.io/2019/09/GoOvid.html" rel="alternate" type="text/html" title="GoOvid – Software-Defined Distributed Systems" /><published>2019-09-26T00:00:00-04:00</published><updated>2019-09-26T00:00:00-04:00</updated><id>https://tonyzhangnd.github.io/2019/09/GoOvid</id><content type="html" xml:base="https://tonyzhangnd.github.io/2019/09/GoOvid.html"><![CDATA[<p>Configuring and deploying distributed systems might be a difficult task, but it doesn’t have to be this way. 
 <a href="https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_altinbuken.pdf">Ovid</a> is a contained-based framework for composing distributed services that aimed to simplify such endeavours.</p>
 
 <p>This post introduces GoOvid (<a href="https://github.com/TonyZhangND/GoOvid">open-source github link</a>) – a complete redesign of the original Ovid written in Go.
@@ -397,11 +397,11 @@ specOK == /\ validity
 
 <span class="k">def</span> <span class="nf">match_and_pickle</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Apply template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
+    tmpl{0...359}.png and mask{0...359}.png.
     
-    <span class="n">Output</span><span class="p">:</span> <span class="n">Coordinates</span> <span class="n">of</span> <span class="n">the</span> <span class="n">top</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">matching</span> <span class="n">templates</span><span class="p">,</span> 
-    <span class="ow">in</span> <span class="n">the</span> <span class="nb">format</span> <span class="p">[(</span><span class="n">deg</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">])],</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">img_name</span><span class="p">.</span><span class="n">pkl</span><span class="p">.</span>
-    <span class="sh">"""</span>
+    Output: Coordinates of the top left corner of matching templates, 
+    in the format [(deg, [points])], saved in img_name.pkl.
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
     <span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
@@ -720,9 +720,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">make_templates</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="sh">'</span><span class="s">base_short.png</span><span class="sh">'</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0</span><span class="gp">...</span><span class="mi">359</span> <span class="k">from</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">rotated</span> <span class="n">templates</span> <span class="k">as</span> <span class="n">tmpl</span><span class="p">{</span><span class="n">deg</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0...359 from base in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    </span><span class="sh">"""</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="n">base</span><span class="p">))</span>
     <span class="k">except</span> <span class="nb">IOError</span><span class="p">:</span>
@@ -735,9 +735,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
-    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">masks</span> <span class="k">as</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">MASK_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    </span><span class="sh">"""</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="sh">'</span><span class="s">tmpl%d.png</span><span class="sh">'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
             <span class="n">cv2</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
@@ -754,11 +754,11 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">match_and_pickle</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Apply template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
+    tmpl{0...359}.png and mask{0...359}.png.
     
-    <span class="n">Output</span><span class="p">:</span> <span class="n">Coordinates</span> <span class="n">of</span> <span class="n">the</span> <span class="n">top</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">matching</span> <span class="n">templates</span><span class="p">,</span> 
-    <span class="ow">in</span> <span class="n">the</span> <span class="nb">format</span> <span class="p">[(</span><span class="n">deg</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">])],</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">img_name</span><span class="p">.</span><span class="n">pkl</span><span class="p">.</span>
-    <span class="sh">"""</span>
+    Output: Coordinates of the top left corner of matching templates, 
+    in the format [(deg, [points])], saved in img_name.pkl.
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
     <span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
@@ -785,9 +785,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s"> Applies match() to images of name M{start </span><span class="gp">...</span> <span class="n">start</span><span class="o">+</span><span class="n">num_images</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="n">s</span><span class="p">.</span><span class="n">jpg</span><span class="p">.</span>
+    <span class="sh">"""</span><span class="s"> Applies match() to images of name M{start ... start+num_images-1}s.jpg.
 
-<span class="s">    This method uses multiprocessing:
+    This method uses multiprocessing:
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     </span><span class="sh">"""</span>
@@ -894,9 +894,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">transform_and_coalesce_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s">Applies transform_and_coalesce() to images of name 
-    M{start </span><span class="gp">...</span> <span class="n">start</span><span class="o">+</span><span class="n">num_images</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="n">s</span><span class="p">.</span><span class="n">jpg</span><span class="p">.</span>
+    M{start ... start+num_images-1}s.jpg.
 
-<span class="s">    This method uses multiprocessing:
+    This method uses multiprocessing:
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     </span><span class="sh">"""</span>
@@ -1045,9 +1045,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 </span>    <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">make_templates</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="sh">'</span><span class="s">base.png</span><span class="sh">'</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0</span><span class="gp">...</span><span class="mi">359</span> <span class="k">from</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">rotated</span> <span class="n">templates</span> <span class="k">as</span> <span class="n">tmpl</span><span class="p">{</span><span class="n">deg</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0...359 from base in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    </span><span class="sh">"""</span>
     <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="n">base</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">ndimage</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">deg</span><span class="p">)</span>
@@ -1103,9 +1103,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 #Match thresholds and resolution were empirically tuned
 </span>
 <span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
-    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">masks</span> <span class="k">as</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">MASK_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    </span><span class="sh">"""</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="sh">'</span><span class="s">tmpl%d.png</span><span class="sh">'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
             <span class="n">cv2</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
@@ -1116,9 +1116,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">match_and_draw</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Apply template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">result</span> <span class="k">with</span> <span class="n">boxes</span> <span class="n">drawn</span> <span class="n">around</span> <span class="n">matches</span> <span class="k">as</span> <span class="k">as</span> <span class="n">img_name</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">.</span><span class="n">jpg</span> <span class="ow">in</span> <span class="n">RES_DIR</span>
-    <span class="sh">"""</span>
+    tmpl{0...359}.png and mask{0...359}.png.
+    Saves result with boxes drawn around matches as as img_name</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="s">.jpg in RES_DIR
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>	<span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">MATCH_RES</span><span class="p">):</span>
@@ -1204,9 +1204,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
     <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">make_templates</span><span class="p">():</span>
-    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0</span><span class="gp">...</span><span class="mi">359</span> <span class="k">from</span> <span class="n">base</span><span class="p">.</span><span class="n">jpg</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">rotated</span> <span class="n">templates</span> <span class="k">as</span> <span class="n">tmpl</span><span class="p">{</span><span class="n">deg</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0...359 from base.jpg in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    </span><span class="sh">"""</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span><span class="sh">'</span><span class="s">base_short.png</span><span class="sh">'</span><span class="p">))</span>
     <span class="k">except</span> <span class="nb">IOError</span><span class="p">:</span>
@@ -1218,9 +1218,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
     <span class="k">return</span>
 
 <span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
-    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">masks</span> <span class="k">as</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">MASK_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    </span><span class="sh">"""</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="sh">'</span><span class="s">tmpl%d.png</span><span class="sh">'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
             <span class="n">cv2</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
@@ -1235,9 +1235,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">match_and_draw</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Applies template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">result</span> <span class="k">with</span> <span class="n">boxes</span> <span class="n">drawn</span> <span class="n">around</span> <span class="n">matches</span> <span class="k">as</span> <span class="k">as</span> <span class="n">img_name</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">.</span><span class="n">jpg</span> <span class="ow">in</span> <span class="n">RES_DIR</span>
-    <span class="sh">"""</span>
+    tmpl{0...359}.png and mask{0...359}.png.
+    Saves result with boxes drawn around matches as as img_name</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="s">.jpg in RES_DIR
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">img_rgb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>

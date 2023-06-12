@@ -491,11 +491,11 @@
 
 <span class="k">def</span> <span class="nf">match_and_pickle</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Apply template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
+    tmpl{0...359}.png and mask{0...359}.png.
     
-    <span class="n">Output</span><span class="p">:</span> <span class="n">Coordinates</span> <span class="n">of</span> <span class="n">the</span> <span class="n">top</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">matching</span> <span class="n">templates</span><span class="p">,</span> 
-    <span class="ow">in</span> <span class="n">the</span> <span class="nb">format</span> <span class="p">[(</span><span class="n">deg</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">])],</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">img_name</span><span class="p">.</span><span class="n">pkl</span><span class="p">.</span>
-    <span class="sh">"""</span>
+    Output: Coordinates of the top left corner of matching templates, 
+    in the format [(deg, [points])], saved in img_name.pkl.
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
     <span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
@@ -814,9 +814,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">make_templates</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="sh">'</span><span class="s">base_short.png</span><span class="sh">'</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0</span><span class="gp">...</span><span class="mi">359</span> <span class="k">from</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">rotated</span> <span class="n">templates</span> <span class="k">as</span> <span class="n">tmpl</span><span class="p">{</span><span class="n">deg</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes templates for rotational-deg=0...359 from base in TMPL_DIR.
+    Saves rotated templates as tmpl{deg}.png in TMPL_DIR
+    </span><span class="sh">"""</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">misc</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="n">base</span><span class="p">))</span>
     <span class="k">except</span> <span class="nb">IOError</span><span class="p">:</span>
@@ -829,9 +829,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">make_masks</span><span class="p">():</span>
-    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">TMPL_DIR</span><span class="p">.</span>
-    <span class="n">Saves</span> <span class="n">masks</span> <span class="k">as</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">in</span> <span class="n">MASK_DIR</span>
-    <span class="sh">"""</span>
+    <span class="sh">"""</span><span class="s"> Makes masks from tmpl{0...359}.png in TMPL_DIR.
+    Saves masks as mask{0...359}.png in MASK_DIR
+    </span><span class="sh">"""</span>
     <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
         <span class="n">tmpl</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">TMPL_DIR</span><span class="p">,</span> <span class="sh">'</span><span class="s">tmpl%d.png</span><span class="sh">'</span> <span class="o">%</span><span class="n">deg</span><span class="p">),</span> 
             <span class="n">cv2</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
@@ -848,11 +848,11 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">match_and_pickle</span><span class="p">(</span><span class="n">img_name</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s"> Apply template matching to img_name in IMG_DIR, using
-    tmpl{0</span><span class="gp">...</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span> <span class="ow">and</span> <span class="n">mask</span><span class="p">{</span><span class="mf">0.</span><span class="p">..</span><span class="mi">359</span><span class="p">}.</span><span class="n">png</span><span class="p">.</span>
+    tmpl{0...359}.png and mask{0...359}.png.
     
-    <span class="n">Output</span><span class="p">:</span> <span class="n">Coordinates</span> <span class="n">of</span> <span class="n">the</span> <span class="n">top</span> <span class="n">left</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">matching</span> <span class="n">templates</span><span class="p">,</span> 
-    <span class="ow">in</span> <span class="n">the</span> <span class="nb">format</span> <span class="p">[(</span><span class="n">deg</span><span class="p">,</span> <span class="p">[</span><span class="n">points</span><span class="p">])],</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">img_name</span><span class="p">.</span><span class="n">pkl</span><span class="p">.</span>
-    <span class="sh">"""</span>
+    Output: Coordinates of the top left corner of matching templates, 
+    in the format [(deg, [points])], saved in img_name.pkl.
+    </span><span class="sh">"""</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Matching img %s</span><span class="sh">'</span> <span class="o">%</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">STRIPPED_DIR</span><span class="p">,</span> <span class="n">img_name</span><span class="p">))</span>
     <span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
@@ -879,9 +879,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 
 <span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="sh">"""</span><span class="s"> Applies match() to images of name M{start </span><span class="gp">...</span> <span class="n">start</span><span class="o">+</span><span class="n">num_images</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="n">s</span><span class="p">.</span><span class="n">jpg</span><span class="p">.</span>
+    <span class="sh">"""</span><span class="s"> Applies match() to images of name M{start ... start+num_images-1}s.jpg.
 
-<span class="s">    This method uses multiprocessing:
+    This method uses multiprocessing:
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     </span><span class="sh">"""</span>
@@ -988,9 +988,9 @@ where <code class="language-plaintext highlighter-rouge">deg</code> is the orien
 
 <span class="k">def</span> <span class="nf">transform_and_coalesce_all</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="sh">"""</span><span class="s">Applies transform_and_coalesce() to images of name 
-    M{start </span><span class="gp">...</span> <span class="n">start</span><span class="o">+</span><span class="n">num_images</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="n">s</span><span class="p">.</span><span class="n">jpg</span><span class="p">.</span>
+    M{start ... start+num_images-1}s.jpg.
 
-<span class="s">    This method uses multiprocessing:
+    This method uses multiprocessing:
     num_processes -- the number of parallel processes to spawn for this task.
     (default 2)
     </span><span class="sh">"""</span>
