@@ -1,0 +1,738 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.3 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Consensus Protocol Using TLA+ - Tony Zhang</title>
+<meta name="description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="Consensus Protocol Using TLA+">
+<meta property="og:url" content="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+
+  <meta property="og:description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/consensus/logo.png">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="Consensus Protocol Using TLA+">
+  <meta name="twitter:description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/consensus/logo.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2018-01-18T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- Google analytics -->
+    <meta name="google-site-verification" content="6jQiHiyZAOn_4uJFMut5IHcWTijv2uESUDVnDQorEuI" />
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Consensus Protocol Using TLA+ - Tony Zhang</title>
+<meta name="description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="Consensus Protocol Using TLA+">
+<meta property="og:url" content="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+
+  <meta property="og:description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/consensus/logo.png">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="Consensus Protocol Using TLA+">
+  <meta name="twitter:description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/consensus/logo.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2018-01-18T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/2018/01/Consensus-TLA-Spec.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- MathJax for Latex rendering -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">Tony Zhang</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://tonyzhangnd.github.io/assets/documents/cv-simplified.pdf" >CV</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/bio_photo.jpg" alt="Tony Zhang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Distributed sytems, <br>and the verification thereof <br>
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">San Francisco, CA</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+            <li><a href="https://twitter.com/WhiterMeerkat" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/TonyZhangND" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+            <li><a href="https://www.instagram.com/whitermeerkat/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:nudzhang@umich.edu">
+            <meta itemprop="email" content="nudzhang@umich.edu" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Consensus Protocol Using TLA+">
+    <meta itemprop="description" content="Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. TLA+ is a specification language used to mathematically describe an algorithm, and is adopted in both academia and industry. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.">
+    <meta itemprop="datePublished" content="January 18, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Consensus Protocol Using TLA+
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <aside class="sidebar__right">
+<nav class="toc">
+    <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Table of Contents</h4></header>
+<ul class="toc__menu" id="markdown-toc">
+  <li><a href="#consensus" id="markdown-toc-consensus">Consensus</a></li>
+  <li><a href="#tla-model" id="markdown-toc-tla-model">TLA+ Model</a>    <ul>
+      <li><a href="#state-machines-and-mathematical-functions" id="markdown-toc-state-machines-and-mathematical-functions">State Machines and Mathematical Functions</a></li>
+      <li><a href="#init" id="markdown-toc-init">Init</a></li>
+      <li><a href="#next" id="markdown-toc-next">Next</a></li>
+    </ul>
+  </li>
+  <li><a href="#checking-for-correctness" id="markdown-toc-checking-for-correctness">Checking for Correctness</a></li>
+  <li><a href="#concluding-remarks" id="markdown-toc-concluding-remarks">Concluding Remarks</a></li>
+</ul>
+
+  </nav>
+</aside>
+
+<p>Looking to dive into distributed systems research, I recently started learning how to write TLA+ specifications. <a href="https://lamport.azurewebsites.net/tla/tla.html">TLA+ is a specification language</a> used to mathematically describe an algorithm, and is adopted in both <a href="https://syslab.cs.washington.edu/papers/tapir-tr-v2.pdf">academia</a> and <a href="http://lamport.azurewebsites.net/tla/amazon.html">industry</a>. It provides functionalities to formally verify algorithm correctness. Precisely, it allows us to check if an algorithm satisfies the properties we want it to satisfy.</p>
+
+<p>In this post I shall discuss a TLA+ specification of Consensus I wrote.   This specification describes the properties of Consensus at its highest level. That is, we are not concerned with <em>how</em> a specific protocol can achieve Consensus, but <em>what</em> properties should any solution to Consensus possess. It is thus useful for now to forget about mechanisms such as message-passing; a system that solves Consensus using extrasensory perception solves it equivalently as one using TCP.</p>
+
+<h2 id="consensus">Consensus</h2>
+<p>The Consensus problem is easy to state and understand. Yet it is the basic building-block of computer systems requiring coordination between agents.</p>
+
+<p>Fundamentally, a protocol that solves Consensus in a synchronous system permitting crash failures must have the following properties.</p>
+
+<ol>
+  <li><strong>Validity:</strong> If all processes that propose a value propose \(v\), then all correct processes
+eventually decide \(v\).</li>
+  <li><strong>Agreement:</strong> If a correct process decides \(v\), then all correct processes eventually decide \(v\).</li>
+  <li><strong>Integrity:</strong> If a correct process decides \(v\), then some process must have proposed \(v\).</li>
+  <li><strong>Termination:</strong> Every correct process eventually decides some value.</li>
+</ol>
+
+<p>Agreement and Integrity are <strong>safety properties</strong>: they dictate that inconsistent decisions cannot occur. Validity and Termination are <strong>liveness properties</strong>: they prevent processes from trivially deciding, say, 0 in all cases, and from not halting.</p>
+
+<p>For our present purpose let us consider, <a href="https://www.sciencedirect.com/science/article/pii/S0020019000000272">without loss of generality</a>, Binary Consensus, in which each participant proposes either 0 or 1.</p>
+
+<h2 id="tla-model">TLA+ Model</h2>
+<h3 id="state-machines-and-mathematical-functions">State Machines and Mathematical Functions</h3>
+<p>To model Consensus mathematically as in TLA+, we adopt a state machine approach. Each participant in the protocol undergoes the following state transitions:</p>
+
+<p><img src="/assets/images/consensus/consensusStateMachine.png" alt="" /></p>
+
+<p>All processes begin in the working state. They then each propose a value, either 0 or 1, to the system. After which, all correct processes then deterministically decides on one of the proposed values (we do not yet care how).</p>
+
+<p>To express these state transitions as math, we begin by defining some constants and variables. In TLA+, we write</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONSTANTS PCS  \* The set of all processes
+
+VARIABLES   states,     \* states of each process in PCS
+            proposals,  \* proposals of each process in PCS
+            pset,       \* set of all proposals 
+            decisions   \* decision of each process in PCS
+</code></pre></div></div>
+
+<p>\(PCS\) and \(pset\) are mathematical sets. It may be intuitive at first to think of the variables \(states\), \(proposals\) and \(decisions\) as arrays in a programming language, mapping each process id to its respective state, proposal and decision. However, such intuition is not correct. TLA+ does not operate in the realm of memory addresses. The language of TLA+ is mathematics, and in math, arrays are functions with domain \(\mathbb{N}\) (the natural numbers).</p>
+
+<p>But unlike arrays, TLA+ functions do not restrict us to any particular domain. Here, I shall define \(states\), \(proposals\) and \(decisions\) as functions mapping \(PCS\), the set of all processes, to their respective state, proposal and decision values.</p>
+
+<h3 id="init">Init</h3>
+<p>At the heart of all state machines, and indeed any TLA+ spec, are statements describing the initial state of the system, and how it transitions from one state to the next. In my model, while each process is a state machine, the entire system as a whole is itself a state machine, and it is this global state machine we describe in TLA+. Therefore, we can think of the behavior Consensus, and indeed any system, as a sequence of state transitions</p>
+
+\[S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...\]
+
+<p>In TLA+, we define \(init\) as a boolean formula describing the properties of the initial state \(S_0\). I describe the initial state of the Consensus as so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>init == /\ states = [p \in PCS |-&gt; "working"]
+        /\ proposals \in [PCS -&gt; {0, 1}]
+        /\ pset = {}
+        /\ decisions = [p \in PCS |-&gt; -1]
+</code></pre></div></div>
+<p>This is a logical conjunct of four statements</p>
+
+<ol>
+  <li>\(states\) is the function \(states : PCS \rightarrow \{``working", ``proposed", ``decided"\}\) such that \(\forall p \in PCS : states(p) \mapsto ``working"\).</li>
+  <li>\(proposals\) is some function \(proposals : PCS \rightarrow \{0, 1\}\). TLA+ will then iterate through all such functions.</li>
+  <li>\(pset\) is the empty set.</li>
+  <li>\(decisions\) is the function \(decisions : PCS \rightarrow \{-1, 0, 1\}\) such that \(\forall p \in PCS : decisions(p) \mapsto -1\), with \(-1\) as the placeholder for not having yet decided.</li>
+</ol>
+
+<p>Note that in each statement, we are not performing variable assignments. Instead, statements 1 through 4 are boolean statements. For instance, statement 1 asserts that \(states\) is indeed the function described. And thus, the statement we call \(init\) is a boolean statement asserting the properties of the initial state of Consensus – any system at its initial state \(S_0\) satisfies the initial spec of Consensus if and only if \(init\) is true when applied to \(S_0\).</p>
+
+<h3 id="next">Next</h3>
+<p>While \(init\) asserts what must be true in \(S_0\), the \(next\) formula describes the state transition</p>
+
+\[S_i \rightarrow S_{i+1}\]
+
+<p>Thus intuitively, if \(init\) is the base case for an inductive proof, then \(next\) is the inductive step. If \(init\) is true on \(S_0\), and \(next\) is true on \(S_i \rightarrow S_{i+1}\) for all \(i = 0, 1, 2, 3...\), then our system behaves correctly as specified.</p>
+
+<p>For my Consensus spec, I split \(next\) into two possible actions of the system –  any process can either choose to propose a value (if it has not yet done so), or decide a value (after all processes have proposed). I write \(propose\) as so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>propose(p) == /\ states[p] = "working"
+              /\ states' = [states EXCEPT ![p] = "proposed"]
+              /\ pset' = pset \cup {proposals[p]}
+              /\ UNCHANGED &lt;&lt;proposals, decisions&gt;&gt;
+</code></pre></div></div>
+
+<p>Again, it is the logical conjunct of four statements that say that in a transition \(S_i \rightarrow S_{i+1}\) where process \(p\) proposes a value:</p>
+<ol>
+  <li>In \(S_i\), \(states(p) \mapsto ``working"\), i.e. \(p\) has not yet proposed.</li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)\) and \(states_{S_{i+1}}(p) \mapsto ``proposed"\), i.e. all states are unchanged except that of \(p\).</li>
+  <li>In \(S_{i+1}\), \(pset\) now contains the value \(proposal(p)\).</li>
+  <li>In \(S_{i+1}\), the functions \(proposals\) and \(decisions\) are exactly those in \(S_i\).</li>
+</ol>
+
+<p>Likewise, I express \(decide\) as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>decide(p) == /\ ~ \E r \in PCS : states[r] = "working"
+             /\ states[p] = "proposed"
+             /\ states' = [states EXCEPT ![p] = "decided"]
+             /\ decisions[p] = -1
+             /\ decisions' = [decisions EXCEPT ![p] = CHOOSE x \in pset : TRUE]
+             /\ UNCHANGED &lt;&lt;proposals, pset&gt;&gt;
+</code></pre></div></div>
+<p>It describes the transition where process \(p\) proposes a value, and is the logical conjunct of:</p>
+<ol>
+  <li>In \(S_i\), there does not exist any process \(q\) such that \(states(q) \mapsto ``working"\), i.e. every process has proposed.</li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : states_{S_{i+1}}(q) \mapsto states_{S_i}(q)\) and \(states_{S_{i+1}}(p) \mapsto ``decided"\), i.e. all states are unchanged except that of \(p\).</li>
+  <li>
+    <ol>
+      <li>In \(S_i\), \(decisions(p) \mapsto -1\), i.e. \(p\) has not yet decided.</li>
+    </ol>
+  </li>
+  <li>In \(S_{i+1}\), \(\forall q \ne p : decisions_{S_{i+1}}(q) \mapsto decisions_{S_i}(q)\) and \(decisions_{S_{i+1}}(p)\) maps to some deterministically chosen value from \(pset\). In the semantics of TLA+, this value will be the same for all processes.</li>
+  <li>In \(S_{i+1}\), the functions \(proposals\) and \(decisions\) are exactly those in  \(S_i\).</li>
+</ol>
+
+<p>Finally, we can express \(next\) as simply</p>
+
+\[next \equiv \exists p \in PCS : propose(p) \lor decide(p)\]
+
+<p>which means that in any step \(S_i \rightarrow S_{i+1}\) there exists a process \(p\) which either proposes or decides a value. When such a process does not exist, then the protocol halts. In TLA+ syntax, that’s</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>next == \E p \in PCS : propose(p) \/ decide(p)
+</code></pre></div></div>
+
+<h2 id="checking-for-correctness">Checking for Correctness</h2>
+<p>The protocol is complete. Now we want to make sure that if \(init\) and \(next\) are true on</p>
+
+\[S_0 \rightarrow S_1 \rightarrow S_2 \rightarrow S_3 \rightarrow ...\]
+
+<p>, then we satisfy the spec of Consensus that is <strong>validity</strong>, <strong>agreement</strong>, <strong>integrity</strong> and <strong>termination</strong>. TLA+ allows us to do exactly that by expressing these as invariants.</p>
+
+<p>But first, we also want to make sure we did not break any type requirements by specifying the invariant \(typeOK\). I shall omit detailed descriptions as the syntax is similar to what I have described above.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>typeOK == /\ states \in [PCS -&gt; {"working", "proposed", "decided"}]
+          /\ proposals \in [PCS -&gt; {0, 1}]
+          /\ pset \subseteq {0, 1}
+          /\ decisions \in [PCS -&gt; {-1, 0, 1}]
+</code></pre></div></div>
+
+<p>Finally, we have the invariants</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>validity == \E v \in {0, 1} : (\A p \in PCS : proposals[p] = v) 
+                =&gt; \A q \in PCS : (states[q] = "decided" 
+                    =&gt; decisions[q] = v)
+
+agreement == \A p1, p2 \in PCS : ~ /\ decisions[p1] = 0
+                                   /\ decisions[p2] = 1
+                                  
+integrity == \A p \in PCS : 
+                (states[p] = "decided" 
+                =&gt; \E r \in PCS : proposals[r] = decisions[p])
+
+specOK == /\ validity
+          /\ agreement
+          /\ integrity
+</code></pre></div></div>
+<p>Here, the only syntax we have yet seen is <code class="language-plaintext highlighter-rouge">=&gt;</code>, which represents logical implication. Therefore, the menacing description for \(validity\) means, quite simply, that, if there exists a value \(v \in \{0, 1\}\) such that everyone proposed \(v\), then at any time for all processes \(q\), if \(q\) has decided, then \(q\) must have decided \(v\).</p>
+
+<p>But what about <strong>termination</strong>? Well, termination means that the protocol halts. In TLA+, that is characterized as a form of deadlock, and TLA+ has built-in detection for that.</p>
+
+<p>We then set up a TLA+ model as so, telling it to check the behavior described by \(init\) and \(next\) against the invariants, and for deadlock.
+<img src="/assets/images/consensus/model.png" alt="" /></p>
+
+<p>Running the model tells us what we have is correct.</p>
+
+<h2 id="concluding-remarks">Concluding Remarks</h2>
+<p>It does seem that the Consensus protocol I have described works like magic. There is no message passing, and processes spontaneously decide on a value from a global set. Yet this is the goal. As emphasized above, this is a high-level description of what Consensus <em>should</em> do, and not how it achieves it.</p>
+
+<p>Of course, TLA+ also allows us to specify a particular implementation of Consensus, complete with message passing and the like. But the point of having done as we did here is that using TLA+, we can later check any specific implementation against this high-level specification we have written. In other words, a specific instance of Consensus is correct if it implies that the general spec is satisfied. I will explore doing that in later post.</p>
+
+<p>Lastly, TLA+ lets us pretty-print our spec, so it looks nicely formatted in latex-style math. You can check out the pretty-printed version of this spec, and the code itself, on <a href="https://github.com/TonyZhangND/TLAplus/tree/master/Consensus">my GitHub page</a>.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-01-18T00:00:00-05:00">January 18, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?via=WhiterMeerkat&text=Consensus+Protocol+Using+TLA%2B%20https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F01%2FConsensus-TLA-Spec.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F01%2FConsensus-TLA-Spec.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Ftonyzhangnd.github.io%2F2018%2F01%2FConsensus-TLA-Spec.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/2025/08/AI-for-verification.html" class="pagination--pager" title="Is AI the Catalyst for Practical Software Verification?
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
