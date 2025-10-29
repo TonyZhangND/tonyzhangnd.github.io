@@ -1,0 +1,569 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.3 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GoOvid – Software-Defined Distributed Systems - Tony Zhang</title>
+<meta name="description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="GoOvid – Software-Defined Distributed Systems">
+<meta property="og:url" content="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+
+  <meta property="og:description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/ovid.jpg">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="GoOvid – Software-Defined Distributed Systems">
+  <meta name="twitter:description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/ovid.jpg">
+    
+  
+
+  
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- Google analytics -->
+    <meta name="google-site-verification" content="6jQiHiyZAOn_4uJFMut5IHcWTijv2uESUDVnDQorEuI" />
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GoOvid – Software-Defined Distributed Systems - Tony Zhang</title>
+<meta name="description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Tony Zhang">
+<meta property="og:title" content="GoOvid – Software-Defined Distributed Systems">
+<meta property="og:url" content="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+
+  <meta property="og:description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+
+
+
+  <meta property="og:image" content="https://tonyzhangnd.github.io/assets/images/ovid.jpg">
+
+
+
+  <meta name="twitter:site" content="@WhiterMeerkat">
+  <meta name="twitter:title" content="GoOvid – Software-Defined Distributed Systems">
+  <meta name="twitter:description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+  <meta name="twitter:url" content="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://tonyzhangnd.github.io/assets/images/ovid.jpg">
+    
+  
+
+  
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://tonyzhangnd.github.io",
+      "logo": "https://tonyzhangnd.github.io/assets/images/home-page.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Tony Zhang",
+      "url": "https://tonyzhangnd.github.io",
+      "sameAs": ["https://www.facebook.com/TonyZhangND","https://twitter.com/WhiterMeerkat","https://www.linkedin.com/in/tonyzhangnd/","https://github.com/TonyZhangND"]
+    }
+  </script>
+
+
+
+
+  <meta name="msvalidate.01" content="F64491E45F3F27AB0DC01AD1FBFC822E">
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Tony Zhang Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    <!-- MathJax for Latex rendering -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">Tony Zhang</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://tonyzhangnd.github.io/assets/documents/cv-simplified.pdf" >CV</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/bio_photo.jpg" alt="Tony Zhang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Tony Zhang</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Distributed sytems, <br>and the verification thereof <br>
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">San Francisco, CA</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+            <li><a href="https://twitter.com/WhiterMeerkat" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/TonyZhangND" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+            <li><a href="https://www.instagram.com/whitermeerkat/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:nudzhang@umich.edu">
+            <meta itemprop="email" content="nudzhang@umich.edu" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="GoOvid – Software-Defined Distributed Systems">
+    <meta itemprop="description" content="Introducing GoOvid, a program for rapid prototyping and deployment of distributed systems">
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">GoOvid – Software-Defined Distributed Systems
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Configuring and deploying distributed systems might be a difficult task, but it doesn’t have to be this way. 
+<a href="https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_altinbuken.pdf">Ovid</a> is a contained-based framework for composing distributed services that aimed to simplify such endeavours.</p>
+
+<p>This post introduces GoOvid (<a href="https://github.com/TonyZhangND/GoOvid">open-source github link</a>) – a complete redesign of the original Ovid written in Go.
+I started this as a side project before I stareted my PhD to learn writing Go and gain some practice building prototype systems. It is work in progress, and it does not yet have the full capabilities of Ovid, such as dynamic reconfiguration. However, GoOvid is in a useful state where it can host arbitrary agents and protocols. A README can be found on the github page, so I will avoid rambling about its usage here. You are welcome to take a look, and contact me regarding any questions or comments!</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#distributed-systems" class="page__taxonomy-item" rel="tag">distributed systems</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#tutorial" class="page__taxonomy-item" rel="tag">tutorial</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#web" class="page__taxonomy-item" rel="tag">web</a>
+    
+    </span>
+  </p>
+
+
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Tony Zhang. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://tonyzhangnd.github.io/archived-posts/2019-09-26-GoOvid";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = ""; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://tonynudazhang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
