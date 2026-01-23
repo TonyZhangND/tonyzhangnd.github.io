@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Exit on any error
+set -e
+
+echo "🚀 Starting Jekyll build and deployment..."
+
+# Check if we're in the right directory
+if [ ! -f "_config.yml" ]; then
+    echo "❌ Error: _config.yml not found. Please run this script from the root of your Jekyll site."
+    exit 1
+fi
+
+# Check if bundle is available
+if ! command -v bundle &> /dev/null; then
+    echo "❌ Error: bundle is not installed. Please install it first:"
+    echo "   gem install bundler"
+    exit 1
+fi
+
+# Install dependencies if needed
+echo "📦 Installing dependencies..."
+bundle install
+
+# Clean previous build
+echo "🧹 Cleaning previous build..."
+rm -rf _site
+
+# Build the site
+echo "🔨 Building Jekyll site..."
+bundle exec jekyll build
+
+# Check if build was successful
+if [ ! -d "_site" ]; then
+    echo "❌ Error: Build failed - _site directory not created"
+    exit 1
+fi
+
+echo "✅ Build completed successfully!"
+
+# Check if git is available
+if ! command -v git &> /dev/null; then
+    echo "❌ Error: git is not installed"
+    exit 1
+fi
+
+# Create a temporary directory for deployment
+echo "📁 Preparing deployment..."
+TEMP_DIR=$(mktemp -d)
+cp -r _site/* "$TEMP_DIR/"
+
+# Change to temp directory and initialize git
+cd "$TEMP_DIR"
+git init
+git remote add origin git@github.com:TonyZhangND/tonyzhangnd.github.io.git
+
+# Add all files and commit
+git add .
+git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
+
+# Force push to main branch (this will replace the entire branch with just the built site)
+echo " Pushing built site to GitHub..."
+git push -f origin main
+
+# Clean up
+cd - > /dev/null
+rm -rf "$TEMP_DIR"
+
+echo "🎉 Deployment completed successfully!"
+echo "🌍 Your site should be available at: https://tonyzhangnd.github.io"
+echo ""
+echo "Note: It may take a few minutes for GitHub Pages to update."
